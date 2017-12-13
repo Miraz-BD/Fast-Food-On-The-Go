@@ -1076,6 +1076,24 @@ div#container
    background-image: none;
    border-radius: 4px;
 }
+#Location_Slider_Value
+{
+   left: 134px !important;
+   top: 295px !important;
+   width: 94px !important;
+   height: 17px !important;
+   visibility: visible !important;
+   display: inline !important;
+   color: #000000;
+   font-size: 19px;
+   font-family: "Lucida Sans Unicode";
+   font-weight: bold;
+   font-style: normal;
+   text-decoration: none;
+   background-color: transparent;
+   background-image: none;
+   border-radius: 4px;
+}
 #wb_PARKING_YES_RADIOBUTTON
 {
    left: 246px !important;
@@ -1393,105 +1411,153 @@ div#container
 <script src="jquery.ui.effect-squares.min.js"></script>
 <script src="wb.slideshow.min.js"></script>
 <script src="wb.animatetext.min.js"></script>
-<script>
-$(document).ready(function()
-{
-   $("#SlideShow_BACKGROUND").slideshow(
-   {
-      interval: 5000,
-      type: 'sequence',
-      effect: 'random',
-      direction: '',
-      count: 8,
-      pagination: false,
-      effectlength: 2000
-   });
-   var LOCATION_SLIDEROptions =
-   {
-      orientation: 'horizontal',
-      animate: true,
-      range: 'max',
-      min: 0,
-      max: 20,
-      value: 2
-   };
-   $("#LOCATION_SLIDER").slider(LOCATION_SLIDEROptions);
 
-   $("#LOCATION_SLIDER").bind('slide', function(event, ui)
-   {
-      $("#jQuerySlider1").val(ui.value);
-   });
-   $("#SUBMIT_BUTTON").button();
-   var PRICE_SLIDEROptions =
-   {
-      orientation: 'horizontal',
-      animate: true,
-      range: 'max',
-      min: 100,
-      max: 500,
-      value: 100
-   };
-   $("#PRICE_SLIDER").slider(PRICE_SLIDEROptions);
-   $("#Banner_FIND-THEPERFECT-FOODCHAIN").animatetext({showDelay: 50, hideDelay: 50, showMode: 2, hideMode: 2, pause: 200});
-});
-</script>
+<style>
+#slidecontainer {
+    width: 25%;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 15px;
+    border-radius: 5px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+
+.slider:hover {
+    opacity: 10;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #4CAF50;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 23px;
+    height: 24px;
+    border-radius: 50%;
+    background: #4CAF50;
+    cursor: pointer;
+}
+</style>
+
 <!-- Insert Google Analytics code here -->
 </head>
+    
 <body>
+    
 <div id="container">
+    
 <div id="wb_REVIEW_BOX" style="position:absolute;left:426px;top:561px;width:287px;height:149px;z-index:1;">
-<img src="images/img0011.png" id="REVIEW_BOX" alt="" style="width:287px;height:149px;"></div>
+    <img src="images/img0011.png" id="REVIEW_BOX" alt="" style="width:287px;height:149px;">
+</div>
+    
 <div id="wb_DINING_BOX" style="position:absolute;left:81px;top:561px;width:287px;height:149px;z-index:2;">
-<img src="images/img0012.png" id="DINING_BOX" alt="" style="width:287px;height:149px;"></div>
+    <img src="images/img0012.png" id="DINING_BOX" alt="" style="width:287px;height:149px;">
+</div>
+    
 <div id="SlideShow_BACKGROUND" style="position:absolute;left:34px;top:158px;width:749px;height:331px;z-index:3;">
-<img class="image" src="images/6859a27aee5a65b.jpg" alt="" title="">
-<img class="image" src="images/7259b4a16502476.jpg" style="display:none;" alt="" title="">
-<img class="image" src="images/57562df7300f9c6.jpg" style="display:none;" alt="" title="">
-<img class="image" src="images/90596a1ccdd2883.jpg" style="display:none;" alt="" title="">
+    <img class="image" src="images/6859a27aee5a65b.jpg" alt="Image1" title="">
+    <img class="image" src="images/7259b4a16502476.jpg" style="display:none;" alt="Image2" title="">
+    <img class="image" src="images/57562df7300f9c6.jpg" style="display:none;" alt="Image3" title="">
+    <img class="image" src="images/90596a1ccdd2883.jpg" style="display:none;" alt="Image4" title="">
 </div>
 
 <div id="wb_PAGE_HEADLINE_TEXT" style="position:absolute;left:12px;top:22px;width:269px;height:21px;z-index:5;">
-<span style="color:#05467E;font-family:'Lucida Console';font-size:21px;"><strong>FASTFOOD ON-THE-GO</strong></span></div>
+    <span style="color:#05467E;font-family:'Lucida Console';font-size:21px;"><strong>FASTFOOD ON-THE-GO</strong></span>
+</div>
+    
 <div id="wb_CssMenu1" style="position:absolute;left:318px;top:0px;width:483px;height:70px;z-index:6;">
-<ul>
-<li class="firstmain"><a class="active" href="./index.html" target="_self" title="Home">Home</a>
-</li>
-<li><a href="./reviews.html" target="_self" title="Reviews">Reviews</a>
-</li>
-<li><a href="./about_us.html" target="_self" title="About Us">About&nbsp;Us</a>
-</li>
-<li><a href="./support.html" target="_self" title="Support">Support</a>
-</li>
-<li><a href="./contact.html" target="_self" title="Contact">Contact</a>
-</li>
-<li><a href="./login.html" target="_self" title="Login">Login</a>
-</li>
-</ul>
+    <ul>
+        <li class="firstmain"><a class="active" href="./index.html" target="_self" title="Home">Home</a>
+        </li>
+        <li><a href="./reviews.html" target="_self" title="Reviews">Reviews</a>
+        </li>
+        <li><a href="./about_us.html" target="_self" title="About Us">About&nbsp;Us</a>
+        </li>
+        <li><a href="./support.html" target="_self" title="Support">Support</a>
+        </li>
+        <li><a href="./contact.html" target="_self" title="Contact">Contact</a>
+        </li>
+        <li><a href="./login.html" target="_self" title="Login">Login</a>
+        </li>
+    </ul>
 </div>
+    
 <div id="wb_CssMenu2" style="position:absolute;left:0px;top:0px;width:320px;height:240px;visibility:hidden;z-index:7;">
-<ul>
-<li class="firstmain"><a class="active" href="./index.html" target="_self" title="Home">Home</a>
-</li>
-<li><a href="#" target="_self" title="About Us">About&nbsp;Us</a>
-</li>
-<li><a href="#" target="_self" title="Services">Services</a>
-</li>
-<li><a href="#" target="_self" title="Solutions">Solutions</a>
-</li>
-<li><a href="#" target="_self" title="Support">Support</a>
-</li>
-<li><a href="#" target="_self" title="Contact">Contact</a>
-</li>
-</ul>
+    <ul>
+        <li class="firstmain"><a class="active" href="./index.html" target="_self" title="Home">Home</a>
+        </li>
+        <li><a href="#" target="_self" title="About Us">About&nbsp;Us</a>
+        </li>
+        <li><a href="#" target="_self" title="Services">Services</a>
+        </li>
+        <li><a href="#" target="_self" title="Solutions">Solutions</a>
+        </li>
+        <li><a href="#" target="_self" title="Support">Support</a>
+        </li>
+        <li><a href="#" target="_self" title="Contact">Contact</a>
+        </li>
+    </ul>
 </div>
-<a href="http://www.wysiwygwebbuilder.com" target="_blank"><img src="images/builtwithwwb12.png" alt="WYSIWYG Web Builder" style="position:absolute;left:713px;top:869px;border-width:0;z-index:250"></a>
-<div id="LOCATION_SLIDER" style="position:absolute;left:223px;top:308px;width:232px;height:14px;z-index:9;">
+     
+    
+<label for="Location_Slider" id="Location_Slider_Value" style="position:absolute;position:absolute;left:415px;top:308px;width:200px;height:14px;z-index:9;font-weight: bold;font-size: 17px">
+</label>
+     
+<div id="slidecontainer"style="position:absolute;left:200px;top:308px;width:200px;height:14px;z-index:9;">
+  <input type="range" min="1" max="10" value="1" class="slider" id="Location_Slider">
 </div>
-<button type="submit" id="SUBMIT_BUTTON" onclick="window.location.href='./search_result.html';return false;" name="GO!" value="GO!" style="position:absolute;left:158px;top:447px;width:162px;height:32px;z-index:10;">GO!</button>
+
+<script>
+    var loc_slider = document.getElementById("Location_Slider");
+    var loc_output = document.getElementById("Location_Slider_Value");
+    loc_output.innerHTML = loc_slider.value+" KM";
+
+    loc_slider.oninput = function() {
+      loc_output.innerHTML = (this.value)+" KM";
+    }
+</script>
+
+    
+<label for="Price_Slider" id="Price_Slider_Value" style="position:absolute;position:absolute;left:400px;top:344px;width:200px;height:14px;z-index:13;font-weight: bold;font-size: 17px">
+</label>
+    
+<div id="slidecontainer"style="position:absolute;left:190px;top:344px;width:200px;height:14px;z-index:13;">
+  <input type="range" min="100" max="1000" value="150" class="slider" id="Price_Slider">
+</div>
+
+<script>
+    var slider = document.getElementById("Price_Slider");
+    var output = document.getElementById("Price_Slider_Value");
+    output.innerHTML = slider.value+" TAKA";
+
+    slider.oninput = function() {
+      output.innerHTML = this.value+" TAKA";
+    }
+</script>
+    
+  
+    
+<button type="submit" id="SUBMIT_BUTTON" onclick="window.location.href='./search_result.html';return false;" name="GO!" value="GO!" style="position:absolute;left:158px;top:447px;width:162px;height:32px;z-index:10;">GO!
+</button>
+    
 <label for="" id="LOCATION_LABEL" style="position:absolute;left:33px;top:305px;width:185px;height:23px;line-height:23px;z-index:11;">Location Range</label>
+    
 <label for="" id="PRICE_LABEL" style="position:absolute;left:33px;top:341px;width:185px;height:23px;line-height:23px;z-index:12;">Price Range</label>
-<div id="PRICE_SLIDER" style="position:absolute;left:223px;top:344px;width:232px;height:14px;z-index:13;">
-</div>
+    
+
 <label for="PARKING_YES_RADIOBUTTON" id="PARKING_LABEL" style="position:absolute;left:33px;top:382px;width:185px;height:23px;line-height:23px;z-index:14;" title="Parking">Parking </label>
 <div id="wb_PARKING_YES_RADIOBUTTON" style="position:absolute;left:246px;top:392px;width:20px;height:20px;z-index:15;">
 <input type="radio" id="PARKING_YES_RADIOBUTTON" name="Name" value="on" style="position:absolute;left:0;top:0;"><label for="PARKING_YES_RADIOBUTTON"></label></div>
