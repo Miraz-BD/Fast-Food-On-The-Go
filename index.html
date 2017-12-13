@@ -1549,26 +1549,68 @@ div#container
 </script>
     
   
-    
-<button type="submit" id="SUBMIT_BUTTON" onclick="window.location.href='./search_result.html';return false;" name="GO!" value="GO!" style="position:absolute;left:158px;top:447px;width:162px;height:32px;z-index:10;">GO!
-</button>
-    
-<label for="" id="LOCATION_LABEL" style="position:absolute;left:33px;top:305px;width:185px;height:23px;line-height:23px;z-index:11;">Location Range</label>
+ <label for="" id="LOCATION_LABEL" style="position:absolute;left:33px;top:305px;width:185px;height:23px;line-height:23px;z-index:11;">Location Range</label>
     
 <label for="" id="PRICE_LABEL" style="position:absolute;left:33px;top:341px;width:185px;height:23px;line-height:23px;z-index:12;">Price Range</label>
     
 
-<label for="PARKING_YES_RADIOBUTTON" id="PARKING_LABEL" style="position:absolute;left:33px;top:382px;width:185px;height:23px;line-height:23px;z-index:14;" title="Parking">Parking </label>
-<div id="wb_PARKING_YES_RADIOBUTTON" style="position:absolute;left:246px;top:392px;width:20px;height:20px;z-index:15;">
-<input type="radio" id="PARKING_YES_RADIOBUTTON" name="Name" value="on" style="position:absolute;left:0;top:0;"><label for="PARKING_YES_RADIOBUTTON"></label></div>
-<div id="wb_PARKING_NO_RADIOBUTTON" style="position:absolute;left:329px;top:392px;width:20px;height:20px;z-index:16;">
-<input type="radio" id="PARKING_NO_RADIOBUTTON" name="Name" value="on" style="position:absolute;left:0;top:0;"><label for="PARKING_NO_RADIOBUTTON"></label></div>
+<label for="PARKING_YES_RADIOBUTTON" id="PARKING_LABEL" style="position:absolute;left:33px;top:382px;width:185px;height:23px;line-height:23px;z-index:14;" title="Parking">Parking 
+</label>
+
+
+    
+    
+
+<div id="Parking_Input" style="position:absolute;left:236px;top:390px;width:50px;height:50px;z-index:16;">
+    <input type="checkbox" id="Parking_Input_Checkbox" name="parking" value="1" style="position:absolute;left:0;top:0;width:20px;height:20px;">
+    <label for="PARKING_YES_RADIOBUTTON"></label>
+</div>
+
+
+   
+
+
+ <input type="text" id="NAME_INPUT" style="position:absolute;left:64px;top:237px;width:340px;height:24px;line-height:24px;z-index:21;" name="search_name" value="" spellcheck="false" title="name" placeholder="Name (Optional)">
+   
+       
+    
+<button type="submit" id="SUBMIT_BUTTON" action="window.location.href='./search_result.php'" onclick="return validateForm()" method="post" name="GO!" value="GO!" style="position:absolute;left:158px;top:447px;width:162px;height:32px;z-index:10;">GO!
+</button>
+    
+  
+    
+<script type="text/javascript">
+    
+    function validateInput(){
+        var in = document.getElementById(NAME_INPUT);
+        if(in==''){
+            alert("No name entered");
+            return false;
+        }
+    }
+</script>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 <label for="PARKING_LABEL" id="PARKING_YES_LABEL" style="position:absolute;left:266px;top:385px;width:94px;height:26px;line-height:26px;z-index:17;">Yes</label>
-<label for="PARKING_LABEL" id="PARKING_NO_LABEL" style="position:absolute;left:357px;top:385px;width:94px;height:26px;line-height:26px;z-index:18;">No</label>
-<div id="Banner_FIND-THEPERFECT-FOODCHAIN" style="position:absolute;left:161px;top:95px;width:493px;height:40px;z-index:19"><span>FIND THE PERFECT FOOD CHAIN</span></div>
+
+<div id="Banner_FIND-THEPERFECT-FOODCHAIN" style="position:absolute;left:161px;top:95px;width:493px;height:40px;z-index:19"><span>FIND THE PERFECT FOOD CHAIN</span>
+</div>
+
 <div id="wb_Line1" style="position:absolute;left:12px;top:66px;width:785px;height:3px;z-index:20;">
 <img src="images/img0004.png" id="Line1" alt=""></div>
-<input type="text" id="NAME_INPUT" style="position:absolute;left:64px;top:237px;width:340px;height:24px;line-height:24px;z-index:21;" name="search_name" value="" spellcheck="false" title="name" placeholder="Name (Optional)">
 
 
 <div id="map" style="position:absolute;left:480px;top:158px;width:303px;height:331px;z-index:20;">
