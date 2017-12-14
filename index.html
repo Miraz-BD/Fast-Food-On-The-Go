@@ -1520,16 +1520,6 @@ div#container
   <input type="range" min="1" max="10" value="1" class="slider" id="Location_Slider">
 </div>
 
-<script>
-    var loc_slider = document.getElementById("Location_Slider");
-    var loc_output = document.getElementById("Location_Slider_Value");
-    loc_output.innerHTML = loc_slider.value+" KM";
-
-    loc_slider.oninput = function() {
-      loc_output.innerHTML = (this.value)+" KM";
-    }
-</script>
-
     
 <label for="Price_Slider" id="Price_Slider_Value" style="position:absolute;position:absolute;left:400px;top:344px;width:200px;height:14px;z-index:13;font-weight: bold;font-size: 17px">
 </label>
@@ -1537,17 +1527,6 @@ div#container
 <div id="slidecontainer"style="position:absolute;left:190px;top:344px;width:200px;height:14px;z-index:13;">
   <input type="range" min="100" max="1000" value="150" class="slider" id="Price_Slider">
 </div>
-
-<script>
-    var slider = document.getElementById("Price_Slider");
-    var output = document.getElementById("Price_Slider_Value");
-    output.innerHTML = slider.value+" TAKA";
-
-    slider.oninput = function() {
-      output.innerHTML = this.value+" TAKA";
-    }
-</script>
-    
   
  <label for="" id="LOCATION_LABEL" style="position:absolute;left:33px;top:305px;width:185px;height:23px;line-height:23px;z-index:11;">Location Range</label>
     
@@ -1568,51 +1547,14 @@ div#container
 
 
    
-
-
- <input type="text" id="NAME_INPUT" style="position:absolute;left:64px;top:237px;width:340px;height:24px;line-height:24px;z-index:21;" name="search_name" value="" spellcheck="false" title="name" placeholder="Name (Optional)">
-   
-       
-    
-<button type="submit" id="SUBMIT_BUTTON" action="window.location.href='./search_result.php'" onclick="return validateForm()" method="post" name="GO!" value="GO!" style="position:absolute;left:158px;top:447px;width:162px;height:32px;z-index:10;">GO!
-</button>
-    
+<form>
+  <input type= "text" id="Name_Input" style="position:absolute;left:64px;top:237px;width:340px;height:24px;line-height:24px;z-index:21;" name="search_name" placeholder="Name(Optional)">
   
-    
-<script type="text/javascript">
-    
-    function validateInput(){
-        var in = document.getElementById(NAME_INPUT);
-        if(in==''){
-            alert("No name entered");
-            return false;
-        }
-    }
-</script>
+</form> 
+<button id="Submit" style="position:absolute;left:158px;top:447px;width:162px;height:32px;z-index:10;" >Submit</button>   
+ 
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-<label for="PARKING_LABEL" id="PARKING_YES_LABEL" style="position:absolute;left:266px;top:385px;width:94px;height:26px;line-height:26px;z-index:17;">Yes</label>
-
-<div id="Banner_FIND-THEPERFECT-FOODCHAIN" style="position:absolute;left:161px;top:95px;width:493px;height:40px;z-index:19"><span>FIND THE PERFECT FOOD CHAIN</span>
-</div>
-
-<div id="wb_Line1" style="position:absolute;left:12px;top:66px;width:785px;height:3px;z-index:20;">
-<img src="images/img0004.png" id="Line1" alt=""></div>
-
-
 <div id="map" style="position:absolute;left:480px;top:158px;width:303px;height:331px;z-index:20;">
 <div id="map"></div>
 <script async defer
@@ -1623,46 +1565,109 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACcDOmPE9QzJUVq2j2ugV2tEj
 // prompted by your browser. If you see the error "The Geolocation service
 // failed.", it means you probably did not give permission for the browser to
 // locate you.
-var map, infoWindow;
-function initMap() {
-  map = new google.maps.Map(document.getElementById('map'), {
-    center: {lat: -34.397, lng: 150.644},
-    zoom: 15
-  });
-  infoWindow = new google.maps.InfoWindow;
+    var map, infoWindow;
+    var pos_lat, pos_long;
+    function initMap() {
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: -34.397, lng: 150.644},
+        zoom: 15
+      });
+      infoWindow = new google.maps.InfoWindow;
 
-  // Try HTML5 geolocation.
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(position) {
-      var pos = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      };
+      // Try HTML5 geolocation.
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            pos_lat = position.coords.latitude;
+            pos_long = position.coords.longitude;
+            
+          var pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
 
+          infoWindow.setPosition(pos);
+          infoWindow.setContent('Your Current Location');
+          infoWindow.open(map);
+          map.setCenter(pos);
+        }, function() {
+          handleLocationError(true, infoWindow, map.getCenter());
+        });
+      } else {
+        // Browser doesn't support Geolocation
+        handleLocationError(false, infoWindow, map.getCenter());
+      }
+    }
+
+    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
       infoWindow.setPosition(pos);
-      infoWindow.setContent('Your Current Location');
+      infoWindow.setContent(browserHasGeolocation ?
+                            'Error: The Geolocation service failed.' :
+                            'Error: Your browser doesn\'t support geolocation.');
       infoWindow.open(map);
-      map.setCenter(pos);
-    }, function() {
-      handleLocationError(true, infoWindow, map.getCenter());
-    });
-  } else {
-    // Browser doesn't support Geolocation
-    handleLocationError(false, infoWindow, map.getCenter());
-  }
-}
+    }
 
-function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-  infoWindow.setPosition(pos);
-  infoWindow.setContent(browserHasGeolocation ?
-                        'Error: The Geolocation service failed.' :
-                        'Error: Your browser doesn\'t support geolocation.');
-  infoWindow.open(map);
-}
+    
+    
+    ////////////////LOCATION SLIDER///////////////////////
+    var loc_slider = document.getElementById("Location_Slider");
+    var loc_output = document.getElementById("Location_Slider_Value");
+    loc_output.innerHTML = loc_slider.value+" KM";
+
+    loc_slider.oninput = function() {
+      loc_output.innerHTML = (this.value)+" KM";
+    }
+    
+    //////////////////////////////////////////////////////
+    
+    /////////////////PRICE SLIDEER/////////////////////////
+    var price_slider = document.getElementById("Price_Slider");
+    var price_output = document.getElementById("Price_Slider_Value");
+    price_output.innerHTML = price_slider.value+" TAKA";
+
+    price_slider.oninput = function() {
+      price_output.innerHTML = this.value+" TAKA";
+    }
+    
+    //////////////////////////////////////////////////////
+    
+    //////////DATA PASSING TO SEARCH RESUT.PHP////////////
+    function searchquery(){
+        var data = [
+            document.getElementById("Name_Input").value, document.getElementById("Location_Slider_Value").innerHTML, document.getElementById("Price_Slider_Value").innerHTML, document.getElementById("Parking_Input_Checkbox").checked,pos_lat,pos_long
+
+        ];
+           
+            localStorage.setItem('Data_P1', JSON.stringify(data));
+            window.location.href='./search_result.php';
+            
+        //alert(pos_lat);
+        
+    }
+    document.getElementById("Submit").addEventListener("click", searchquery);
+    
+    ///////////////////////////////////////////////////////
+    function test(){
+        
+        alert('hello');
+        
+    }
+    
+   
 </script>
 
 
 </div>
+
+    
+<label for="PARKING_LABEL" id="PARKING_YES_LABEL" style="position:absolute;left:266px;top:385px;width:94px;height:26px;line-height:26px;z-index:17;">Yes</label>
+
+<div id="Banner_FIND-THEPERFECT-FOODCHAIN" style="position:absolute;left:161px;top:95px;width:493px;height:40px;z-index:19"><span>FIND THE PERFECT FOOD CHAIN</span>
+</div>
+
+<div id="wb_Line1" style="position:absolute;left:12px;top:66px;width:785px;height:3px;z-index:20;">
+<img src="images/img0004.png" id="Line1" alt=""></div>
+
+
 <div id="wb_ICON_DINING" style="position:absolute;left:184px;top:531px;width:82px;height:51px;text-align:center;z-index:23;">
 <div id="ICON_DINING"><i class="material-icons">&#xe561;</i></div></div>
 <div id="wb_ICON_REVIEW" style="position:absolute;left:565px;top:523px;width:62px;height:51px;text-align:center;z-index:24;">
@@ -1688,5 +1693,9 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 <span style="color:#FFFFFF;font-family:'Trebuchet MS';font-size:11px;">Copyright © 2017 by &quot;Mirazur Rahman&quot;&nbsp; ·&nbsp; All Rights reserved&nbsp; ·&nbsp; E-Mail: mdmirazur@yahoo.com.sg</span></div>
 </div>
 </div>
+    
+    
+    
+    
 </body>
 </html>

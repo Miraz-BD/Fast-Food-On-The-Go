@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="X-UA-Compatible" content="chrome=1">
-<title>Untitled Page</title>
+<title>FAST FOOD ON-THE-GO</title>
 <meta name="generator" content="WYSIWYG Web Builder 12 Trial Version - http://www.wysiwygwebbuilder.com">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
@@ -505,6 +505,33 @@ $(document).ready(function()
 <!-- Insert Google Analytics code here -->
 </head>
 <body>
+    
+    
+    
+<script>
+    
+    var data = JSON.parse(localStorage.getItem('Data_P1'));
+    var Name = data[0];
+    var radius = data[1];
+    var price = data[2];
+    var parking = data[3];
+    var lat = data[4];
+    var lon = data[5];
+    
+    alert('name: ' + Name + '\nradius: ' + radius + '\nprice: ' + price + '\nparking: ' + parking + '\nlattitude: ' + lat + '\nlongitude: ' + lon );
+    
+    
+</script>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 <div id="container">
 
 <div id="wb_Text6" style="position:absolute;left:12px;top:22px;width:269px;height:21px;z-index:2;">
