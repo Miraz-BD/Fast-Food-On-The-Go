@@ -1,4 +1,7 @@
 <!doctype html>
+
+
+
 <html>
 <head>
 <meta http-equiv="X-UA-Compatible" content="chrome=1">
@@ -493,6 +496,19 @@ div#container
    margin: -2px 0px -2px 0px;
 }
 }
+    
+///////////////////////
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+tr:nth-child(even){background-color: #f2f2f2}
+///////////////////////
 </style>
 <script src="jquery-1.12.4.min.js"></script>
 <script src="wb.animatetext.min.js"></script>
@@ -505,9 +521,7 @@ $(document).ready(function()
 <!-- Insert Google Analytics code here -->
 </head>
 <body>
-    
-    
-    
+   
 <script>
     
     var data = JSON.parse(localStorage.getItem('Data_P1'));
@@ -517,15 +531,149 @@ $(document).ready(function()
     var parking = data[3];
     var lat = data[4];
     var lon = data[5];
+   
     
-    alert('name: ' + Name + '\nradius: ' + radius + '\nprice: ' + price + '\nparking: ' + parking + '\nlattitude: ' + lat + '\nlongitude: ' + lon );
+    //location.href = "./search_result.php"
+    //alert('name: ' + Name + '\nradius: ' + radius + '\nprice: ' + price + '\nparking: ' + parking + '\nlattitude: ' + lat + '\nlongitude: ' + lon );
+    
+    //window.location.href = "./search_result.php?name="+Name"&radius="+radius"&price="+price"&parking="+parking"&lat="+lat"lon="+lon;
     
     
-</script>
+ </script>
+    
+
+
+    
+<?php
+    
+    $name = "<script>document.write(Name)</script>";
+    $radius = "<script>document.write(radius)</script>";    
+    $price = "<script>document.write(price)</script>";
+    $parking = "<script>document.write(parking)</script>";
+    $lat = "<script>document.write(lat)</script>";
+    $lon = "<script>document.write(lon)</script>";
+
+
+    $price1 = trim($price);
+    //echo $name;
+    //echo $radius;
+    //echo $name;
+    echo $price;
+    //echo $parking;
+    //echo $lat;
+    //echo $lon;
     
     
     
+    $db = mysqli_connect('localhost','root','','restaurant')
+        or die('Error connecting to MySQL server.');
     
+    
+    //$query = "SELECT * FROM rest_info, rest_menu, rest_place_review, rest_food_review ";
+    $query1 = "SELECT count(*)FROM(SELECT rest_menu_Name FROM rest_menu WHERE rest_menu_Price <= '200')";
+    $query = "SELECT rest_menu_Name FROM rest_menu WHERE rest_menu_Price <= '200'";
+    
+    $result = mysqli_query($db, $query) or die('Error querying database.');
+    $count = mysqli_query($db, $query1) or die('Error querying database2.');
+    echo $count;
+    while ($row = mysqli_fetch_array($result)) {
+        echo $row['rest_menu_Name'];
+        
+        /*
+        if(row[rest_menu_Price<=price]){
+            echo $row['rest_menu_Name'];
+        }
+        else{
+            printf("Sorry Nothing in this Price Range!");
+        }*/
+    }
+    //Step2
+/*
+//Step3
+$result = mysqli_query($db, $query);
+
+while ($row = mysqli_fetch_assoc($result)) {
+if(row[rest_menu_Price<=price]){
+    echo price;
+}
+else{
+    printf("Sorry Noting in this Price Range!");
+    }
+ echo $row['user_ID'] . ' ' . $row['user_Name'] . ': ' . $row['user_Location'] . ' ' . $row['user_Contact'] .'<br />';
+}
+//Step 4
+
+    
+///////////distance check///////
+    function check_distance($latitude1, $longitude1, $latitude2, $longitude2){
+    
+    $distance = getDistance( 56.130366, -106.34677099999, 57.223366, -106.34675644699 );
+    if( $distance < 100 ) {
+        echo "Within 100 kilometer radius";
+    } 
+    else {
+        echo "Outside 100 kilometer radius";
+    }
+}
+function getDistance( $latitude1, $longitude1, $latitude2, $longitude2 ) {  
+    $earth_radius = 6371;
+
+    $dLat = deg2rad( $latitude2 - $latitude1 );  
+    $dLon = deg2rad( $longitude2 - $longitude1 );  
+
+    $a = sin($dLat/2) * sin($dLat/2) + cos(deg2rad($latitude1)) * cos(deg2rad($latitude2)) * sin($dLon/2) * sin($dLon/2);  
+    $c = 2 * asin(sqrt($a));  
+    $d = $earth_radius * $c;  
+
+    return $d;  
+}
+    //////////////
+    */
+ if(isset($_GET['Name'])){
+     $tes = $_POST['Name'];
+    echo $tes;     
+ } 
+$query = "SELECT rest_menu_Photo FROM rest_menu WHERE rest_menu_ID =1";
+mysqli_query($db, $query) or die('Error querying database.');
+
+//Step3
+$result = mysqli_query($db, $query);
+$row = mysqli_fetch_array($result);?>
+<?php
+mysqli_close($db);
+?>
+
+
+    
+    
+  
+    <div style="overflow-x:auto;overflow-y:auto;position:absolute;left:305px;top:320px;width:800px;height:940px;z-index:20">
+  <table>
+    <tr>
+      <th>Photo</th>
+      <th>Food Name</th>
+      <th>Restaurant</th>
+      <th>Location</th>
+      <th>Contents</th>
+      <th>Capacity</th>
+      <th>Parking</th>
+      <th>Contact</th>
+      <th>Email</th>
+    </tr>
+    <tr>
+      <td><img src="<?php echo $row['rest_menu_Photo']; ?>" height="150" width="150"></td>
+      <td>Smith</td>
+      <td>50</td>
+      <td>50</td>
+      <td>50</td>
+      <td>50</td>
+      <td>50</td>
+      <td>50</td>
+      <td>50</td>
+    </tr>
+  </table>
+</div>
+
     
     
     

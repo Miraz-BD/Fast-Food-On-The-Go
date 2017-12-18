@@ -1551,7 +1551,7 @@ div#container
   <input type= "text" id="Name_Input" style="position:absolute;left:64px;top:237px;width:340px;height:24px;line-height:24px;z-index:21;" name="search_name" placeholder="Name(Optional)">
   
 </form> 
-<button id="Submit" style="position:absolute;left:158px;top:447px;width:162px;height:32px;z-index:10;" >Go!</button>   
+<button id="Submit" style="position:absolute;left:158px;top:447px;width:162px;height:32px;z-index:10;" >Submit</button>   
  
     
     
@@ -1560,7 +1560,7 @@ div#container
 <script async defer
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACcDOmPE9QzJUVq2j2ugV2tEjcwrcN4ZI&callback=initMap">
 </script>
-<script>
+<script type="text/javascript">
 // Note: This example requires that you consent to location sharing when
 // prompted by your browser. If you see the error "The Geolocation service
 // failed.", it means you probably did not give permission for the browser to
@@ -1611,10 +1611,10 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACcDOmPE9QzJUVq2j2ugV2tEj
     ////////////////LOCATION SLIDER///////////////////////
     var loc_slider = document.getElementById("Location_Slider");
     var loc_output = document.getElementById("Location_Slider_Value");
-    loc_output.innerHTML = loc_slider.value;
+    loc_output.innerHTML = loc_slider.value+" KM";
 
     loc_slider.oninput = function() {
-      loc_output.innerHTML = (this.value);
+      loc_output.innerHTML = (this.value)+" KM";
     }
     
     //////////////////////////////////////////////////////
@@ -1622,10 +1622,10 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACcDOmPE9QzJUVq2j2ugV2tEj
     /////////////////PRICE SLIDEER/////////////////////////
     var price_slider = document.getElementById("Price_Slider");
     var price_output = document.getElementById("Price_Slider_Value");
-    price_output.innerHTML = price_slider.value;
+    price_output.innerHTML = price_slider.value+" TAKA";
 
     price_slider.oninput = function() {
-      price_output.innerHTML = this.value;
+      price_output.innerHTML = this.value+" TAKA";
     }
     
     //////////////////////////////////////////////////////
@@ -1633,17 +1633,37 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACcDOmPE9QzJUVq2j2ugV2tEj
     //////////DATA PASSING TO SEARCH RESUT.PHP////////////
     function searchquery(){
         var data = [
-            document.getElementById("Name_Input").value, document.getElementById("Location_Slider_Value").innerHTML, document.getElementById("Price_Slider_Value").innerHTML, document.getElementById("Parking_Input_Checkbox").checked,pos_lat,pos_long
-
-        ];
+            document.getElementById("Name_Input").value, 
+            document.getElementById("Location_Slider_Value").innerHTML, 
+            document.getElementById("Price_Slider_Value").innerHTML, 
+            document.getElementById("Parking_Input_Checkbox").checked,
+            pos_lat,
+            pos_long
+            ];
+       localStorage.setItem('Data_P1', JSON.stringify(data));
+            
+            //$.post('./search_result.php', {name1: name});
+        //window.location.href = "./search_result.php?name=" + name "&radius=" + loc "&price=" + price "&parking" + parkg "&lat" + pos_lat "lon" + pos_lon;
            
-            localStorage.setItem('Data_P1', JSON.stringify(data));
-            window.location.href='./search_result.php';
+              
+        window.location.href='./search_result.php';
             
         //alert(pos_lat);
         
     }
-    document.getElementById("Submit").addEventListener("click", searchquery);
+    /*
+    function callAjaxAddition(data) {
+  $.ajax({
+     type: "POST",
+     url: "./search_result.php",
+     data: {arguments: 'pos_lat'},
+     success: function(data) {
+       //$("#answer").html('<ul><li>'+data+'</li></ul>');    
+    }
+  });
+  return false;
+}*/
+    document.getElementById("Submit").addEventListener("click", searchquery;
     
     ///////////////////////////////////////////////////////
     function test(){
