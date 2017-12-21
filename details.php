@@ -1450,12 +1450,60 @@ div#container
     background: #4CAF50;
     cursor: pointer;
 }
+    
+    
+       
+#resulttable {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    vertical-align:top;
+    width: 500%;
+    position: relative;
+    left: 5px;
+    top: 5px;
+    right:auto;
+    border: 0px solid #73AD21;
+    
+}
+
+#resulttable td, #resulttable th {
+    border: 3px solid #ddd;
+    padding: 5px;
+}
+
+#resulttable tr:nth-child(even){background-color: #f2f2f2;}
+
+#resulttable tr:hover {background-color: #ddd;}
+
+#resulttable th {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    text-align:center;
+    background-color: #4CAF50;
+    color: white;
+}
+    
+.scrollit {
+    overflow:auto;
+    height:400px;
+}
+div.scrollit{
+    
+    position: relative;
+    width: 45%;
+    left: 100px;
+    top: 210px;
+    border: 3px solid #73AD21;
+    text-wrap: normal;
+    word-wrap: break-word;
+    }
 </style>
 
 <!-- Insert Google Analytics code here -->
 </head>
     
 <body>
+ 
     
 <div id="container">
     
@@ -1468,10 +1516,7 @@ div#container
 </div>
     
 <div id="SlideShow_BACKGROUND" style="position:absolute;left:34px;top:158px;width:749px;height:331px;z-index:3;">
-    <img class="image" src="images/6859a27aee5a65b.jpg" alt="Image1" title="">
-    <img class="image" src="images/7259b4a16502476.jpg" style="display:none;" alt="Image2" title="">
-    <img class="image" src="images/57562df7300f9c6.jpg" style="display:none;" alt="Image3" title="">
-    <img class="image" src="images/90596a1ccdd2883.jpg" style="display:none;" alt="Image4" title="">
+    
 </div>
 
 <div id="wb_PAGE_HEADLINE_TEXT" style="position:absolute;left:12px;top:22px;width:269px;height:21px;z-index:5;">
@@ -1512,162 +1557,108 @@ div#container
     </ul>
 </div>
      
-    
-<label for="Location_Slider" id="Location_Slider_Value" style="position:absolute;position:absolute;left:415px;top:308px;width:200px;height:14px;z-index:9;font-weight: bold;font-size: 17px">
-</label>
      
-<div id="slidecontainer"style="position:absolute;left:200px;top:308px;width:200px;height:14px;z-index:9;">
-  <input type="range" min="1" max="10" value="1" class="slider" id="Location_Slider">
-</div>
-
-    
-<label for="Price_Slider" id="Price_Slider_Value" style="position:absolute;position:absolute;left:400px;top:344px;width:200px;height:14px;z-index:13;font-weight: bold;font-size: 17px">
-</label>
-    
-<div id="slidecontainer"style="position:absolute;left:190px;top:344px;width:200px;height:14px;z-index:13;">
-  <input type="range" min="50" max="1500" value="150" class="slider" id="Price_Slider">
-</div>
-  
- <label for="" id="LOCATION_LABEL" style="position:absolute;left:33px;top:305px;width:185px;height:23px;line-height:23px;z-index:11;">Location Range</label>
-    
-<label for="" id="PRICE_LABEL" style="position:absolute;left:33px;top:341px;width:185px;height:23px;line-height:23px;z-index:12;">Price Range</label>
-    
-
-<label for="PARKING_YES_RADIOBUTTON" id="PARKING_LABEL" style="position:absolute;left:33px;top:382px;width:185px;height:23px;line-height:23px;z-index:14;" title="Parking">Parking 
-</label>
-
 
     
     
-
-<div id="Parking_Input" style="position:absolute;left:236px;top:390px;width:50px;height:50px;z-index:16;">
-    <input type="checkbox" id="Parking_Input_Checkbox" name="parking" value="1" style="position:absolute;left:0;top:0;width:20px;height:20px;">
-    <label for="PARKING_YES_RADIOBUTTON"></label>
-</div>
-
-
+<?php
+        $restid = $_GET["restID"];
+        $menuid = $_GET["restmenuID"];
+        $lat = $_GET["lat"];
+        $lon = $_GET["lon"];
+           
+        //echo $lat;
+        //echo $lon;
+        //echo $restid;
+        //echo $menuid;
+          
+          
+          $query = "SELECT rest_info.rest_ID, rest_info.rest_Name, rest_info.rest_name_Location, rest_info.rest_loc_Lat, rest_info.rest_loc_Long, rest_info.rest_Contact, rest_info.rest_ParkingCapacity, rest_info.rest_SeatingCapacity, rest_menu.rest_menu_Photo, rest_menu.rest_menu_ID, rest_menu.rest_menu_Name, rest_menu.rest_menu_Price FROM rest_menu INNER JOIN rest_info ON rest_menu.rest_menu_rest_ID = rest_info.rest_ID WHERE rest_menu_ID = $menuid AND rest_ID=$restid";
+          
+        $db = mysqli_connect('localhost','root','','restaurant')
+        or die('Error connecting to MySQL server.');
    
-
-<button id="Submit" style="position:absolute;left:158px;top:447px;width:162px;height:32px;z-index:10;" >Go!</button>   
- <input type= "text" id="Name_Input" style="position:absolute;left:64px;top:237px;width:340px;height:24px;line-height:24px;z-index:21;" name="search_name" placeholder="Name(Optional)">
     
+    
+    
+        $result = mysqli_query($db, $query) or die('Error querying database.');
+            echo "<div class='scrollit'>";
+            echo "<table id='resulttable' border = 0>";    
+            echo "<tr><td> </td></tr>\n";
+           while ($row = mysqli_fetch_assoc($result)) {
+            $endlat = $row['rest_loc_Lat'];
+            //echo $endlat;
+            
+            $endlon = $row['rest_loc_Long'];
+            //echo $endlon;
+            
+           echo "<tr><td>PHOTO</td></tr><tr><td>{$row['rest_menu_Name']}</td></tr><tr><td>{$row['rest_Name']}</td></tr><tr><td>{$row['rest_name_Location']}</td></tr><tr><td>Price- {$row['rest_menu_Price']}</td></tr><tr><td>Seating- {$row['rest_SeatingCapacity']}</td></tr><tr><td>Parking- {$row['rest_ParkingCapacity']}</td></tr><tr><td>Contact- 0{$row['rest_Contact']}</td></tr>\n";
+
+        }
+    
+        echo "</table>";
+        
+        echo "</div>";
+?>
+    
+    <script type="text/javascript" src="script.js"></script>
+
  
-<div id="map" style="position:absolute;left:480px;top:158px;width:303px;height:331px;z-index:20;">
-<div id="map"></div>
-<script async defer
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACcDOmPE9QzJUVq2j2ugV2tEjcwrcN4ZI&callback=initMap">
-</script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-<script>
-// Note: This example requires that you consent to location sharing when
-// prompted by your browser. If you see the error "The Geolocation service
-// failed.", it means you probably did not give permission for the browser to
-// locate you.
-    var map, infoWindow;
-    var pos_lat, pos_long;
-    function initMap() {
-      map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: -34.397, lng: 150.644},
-        zoom: 15
-      });
-      infoWindow = new google.maps.InfoWindow;
-
-      // Try HTML5 geolocation.
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            pos_lat = position.coords.latitude;
-            pos_long = position.coords.longitude;
-            
-          var pos = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          };
-
-          infoWindow.setPosition(pos);
-          infoWindow.setContent('Your Current Location');
-          infoWindow.open(map);
-          map.setCenter(pos);
-        }, function() {
-          handleLocationError(true, infoWindow, map.getCenter());
+<div id="map" style="position:absolute;left:480px;top:208px;width:303px;height:331px;z-index:20;">
+    <div id="map"></div>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAaM3Z3MQLaz4qlF702jUoYhmRdsJCktgs&callback=initMap">
+    </script>
+    <script>
+        var startlat = "<?php echo $lat ?>";
+        var startlon = "<?php echo $lon ?>";
+        var comma = ',';
+        var start = startlat+comma+startlon;
+        //alert(start);
+        /////////
+        var endlat = "<?php echo $endlat ?>";
+        var endlon = "<?php echo $endlon ?>";
+        var end = endlat+comma+endlon;
+        //alert(end);
+        
+        
+      function initMap() {
+        var directionsService = new google.maps.DirectionsService;
+        var directionsDisplay = new google.maps.DirectionsRenderer;
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 14,
+          center: {lat: 23.81, lng: 90.41}
         });
-      } else {
-        // Browser doesn't support Geolocation
-        handleLocationError(false, infoWindow, map.getCenter());
+        directionsDisplay.setMap(map);
+
+        calculateAndDisplayRoute(directionsService, directionsDisplay);
       }
-    }
 
-    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-      infoWindow.setPosition(pos);
-      infoWindow.setContent(browserHasGeolocation ?
-                            'Error: The Geolocation service failed.' :
-                            'Error: Your browser doesn\'t support geolocation.');
-      infoWindow.open(map);
-    }
+      function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+        directionsService.route({
+          origin: start,
+          destination: end,
+          travelMode: 'DRIVING'
+        }, function(response, status) {
+          if (status === 'OK') {
+            directionsDisplay.setDirections(response);
+          } else {
+            window.alert('Directions request failed due to ' + status);
+          }
+        });
+      }
+    </script>
+    
+    
+    
 
+    </div>
     
     
-    ////////////////LOCATION SLIDER///////////////////////
-    var loc_slider = document.getElementById("Location_Slider");
-    var loc_output = document.getElementById("Location_Slider_Value");
-    loc_output.innerHTML = loc_slider.value;
-
-    loc_slider.oninput = function() {
-      loc_output.innerHTML = (this.value);
-    }
-    
-    //////////////////////////////////////////////////////
-    
-    /////////////////PRICE SLIDEER/////////////////////////
-    var price_slider = document.getElementById("Price_Slider");
-    var price_output = document.getElementById("Price_Slider_Value");
-    price_output.innerHTML = price_slider.value;
-
-    price_slider.oninput = function() {
-      price_output.innerHTML = this.value;
-    }
-    
-    //////////////////////////////////////////////////////
-    
-    //////////DATA PASSING TO SEARCH RESUT.PHP////////////
-    function searchquery(){
-           
-            var varname = document.getElementById("Name_Input").value;
-            var varslider = document.getElementById("Location_Slider_Value").innerHTML; 
-            var varprice = document.getElementById("Price_Slider_Value").innerHTML;
-            var varpark = document.getElementById("Parking_Input_Checkbox").checked;
-             
-            if(varname==null || varname ==""){
-                varname = 'nothing';
-            }
-        
-        var data = [
-            varname,varslider,varprice,varpark,pos_lat,pos_long
-
-        ];
-           
-            localStorage.setItem('Data_P1', JSON.stringify(data));
-            window.location.href='./search_result.php? name='+varname+'&radius='+varslider+'&price='+varprice+'&parking='+varpark+'&lat='+pos_lat+'&lon='+pos_long;
-            
-    }
-    document.getElementById("Submit").addEventListener("click", searchquery);
-    
-    ///////////////////////////////////////////////////////
-    function test(){
-        
-        alert('hello');
-        
-    }
-    
-   
-</script>
-
-
+<div id="Banner_FIND-THEPERFECT-FOODCHAIN" style="position:absolute;left:161px;top:95px;width:493px;height:40px;z-index:19"><span>FIND THE PERFECT FOOD CHAIN</span>
 </div>
 
-    
-<label for="PARKING_LABEL" id="PARKING_YES_LABEL" style="position:absolute;left:266px;top:385px;width:94px;height:26px;line-height:26px;z-index:17;">Yes</label>
-
-<div id="Banner_FIND-THEPERFECT-FOODCHAIN" style="position:absolute;left:161px;top:95px;width:493px;height:40px;z-index:19"><span>FIND THE PERFECT FOOD CHAIN</span>
+<div id="Banner_FIND-THEPERFECT-FOODCHAIN" style="position:absolute;left:161px;top:155px;width:493px;height:40px;z-index:19"><span>DETAILS ABOUT THE OFFER</span>
 </div>
 
 <div id="wb_Line1" style="position:absolute;left:12px;top:66px;width:785px;height:3px;z-index:20;">

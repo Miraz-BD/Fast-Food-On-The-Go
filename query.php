@@ -12,9 +12,8 @@
 div#container
 {
    width: 800px;
-   position:relative;
-   left: 300px;
-    top: -505px;
+   position: relative;
+   margin: 0 auto 0 auto;
    text-align: left;
 }
 body
@@ -510,49 +509,6 @@ th, td {
 }
 tr:nth-child(even){background-color: #f2f2f2}
 ///////////////////////
-    
-   
-#resulttable {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-    position: relative;
-    left: 25px;
-    top: 50px;
-    border: 3px solid #73AD21;
-}
-
-#resulttable td, #resulttable th {
-    border: 3px solid #ddd;
-    padding: 5px;
-}
-
-#resulttable tr:nth-child(even){background-color: #f2f2f2;}
-
-#resulttable tr:hover {background-color: #ddd;}
-
-#resulttable th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #4CAF50;
-    color: white;
-}
-    
-.scrollit {
-    overflow:scroll;
-    height:500px;
-}
-    div.scrollit{
-        
-        position: relative;
-    width: 85%;
-    left: 100px;
-    top: 200px;
-    border: 3px solid #73AD21;
-    text-wrap: normal;
-    word-wrap: break-word;
-    }
 </style>
 <script src="jquery-1.12.4.min.js"></script>
 <script src="wb.animatetext.min.js"></script>
@@ -561,8 +517,6 @@ $(document).ready(function()
 {
    $("#Banner1").animatetext({showDelay: 50, hideDelay: 50, showMode: 2, hideMode: 2, pause: 200});
 });
-    
- 
 </script>
 <!-- Insert Google Analytics code here -->
 </head>
@@ -578,8 +532,16 @@ $(document).ready(function()
     var lat = data[4];
     var lon = data[5];
     
-   
-    //alert('name: ' + Name + '\nradius: ' + radius + '\nprice: ' + price + '\nparking: ' + parking + '\nlattitude: ' + lat + '\nlongitude: ' + lon );
+    
+    var iprice = parseInt(price);
+    //alert(typeof(iprice));
+    //
+    
+    //location.href = "./search_result.php"
+    alert('name: ' + Name + '\nradius: ' + radius + '\nprice: ' + price + '\nparking: ' + parking + '\nlattitude: ' + lat + '\nlongitude: ' + lon );
+    
+    //window.location.href = "./search_result.php?name="+Name"&radius="+radius"&price="+price"&parking="+parking"&lat="+lat"lon="+lon;
+    
     
  </script>
     
@@ -588,72 +550,80 @@ $(document).ready(function()
     
 <?php
     
-    //$name = "<script>document.write(Name)</script>";
-    //$radius = "<script>document.write(radius)</script>";    
-    //$price = "<script>document.write(iprice)</script>";
-    //$parking = "<script>document.write(parking)</script>";
-    //$lat = "<script>document.write(lat)</script>";
-    //$lon = "<script>document.write(lon)</script>";
+    $name = "<script>document.write(Name)</script>";
+    $radius = "<script>document.write(radius)</script>";    
+    $price = "<script>document.write(iprice)</script>";
+    $parking = "<script>document.write(parking)</script>";
+    $lat = "<script>document.write(lat)</script>";
+    $lon = "<script>document.write(lon)</script>";
+
+     $pricei = intval($price) +0;
+    //$pricei = (int)$price +0;
+   
+    if(is_numeric($pricei)){
+        echo "Numeric";
+    }else{
+        echo"Not Numeric";
+    }
+
+    //var_dump($price);
+    //$price = intval($price);
     
     
-    $affected_rows;
-    $answer = array();
-    $name = $_GET["name"];
-    $radius = $_GET["radius"];    
-    $price = $_GET["price"];
-    $parking = $_GET["parking"];
-    $lat = $_GET["lat"];
-    $lon = $_GET["lon"];
-    
+    //$price1 = trim($price);
     //echo $name;
     //echo $radius;
+    //echo $name;
     //echo $price;
     //echo $parking;
     //echo $lat;
     //echo $lon;
-    if($name==="nothing"){
-        $query = "SELECT rest_info.rest_ID, rest_info.rest_Name, rest_info.rest_name_Location, rest_info.rest_loc_Lat, rest_info.rest_loc_Long, rest_info.rest_Contact, rest_info.rest_ParkingCapacity, rest_info.rest_SeatingCapacity, rest_menu.rest_menu_Photo, rest_menu.rest_menu_ID, rest_menu.rest_menu_Name, rest_menu.rest_menu_Price FROM rest_menu INNER JOIN rest_info ON rest_menu.rest_menu_rest_ID = rest_info.rest_ID WHERE rest_menu_Price <= $price";
-            }
-    else{
-        
-        //$query = "SELECT rest_menu_Name FROM rest_menu WHERE rest_menu_Name LIKE '%$name%' AND rest_menu_Price<=$price";
-        $query = "SELECT rest_info.rest_ID, rest_info.rest_Name, rest_info.rest_name_Location, rest_info.rest_loc_Lat, rest_info.rest_loc_Long, rest_info.rest_Contact, rest_info.rest_ParkingCapacity, rest_info.rest_SeatingCapacity, rest_menu.rest_menu_Photo, rest_menu.rest_menu_ID, rest_menu.rest_menu_Name, rest_menu.rest_menu_Price FROM rest_menu INNER JOIN rest_info ON rest_menu.rest_menu_rest_ID = rest_info.rest_ID WHERE rest_menu_Name LIKE '%$name%' AND rest_menu_Price<=$price";
-        //echo $query;
-    }
+    echo $pricei;
+    
     
     $db = mysqli_connect('localhost','root','','restaurant')
         or die('Error connecting to MySQL server.');
-   
     
+    
+    //$query = "SELECT * FROM rest_info, rest_menu, rest_place_review, rest_food_review ";
+    //$query1 = "SELECT count(*)FROM(SELECT rest_menu_Name FROM rest_menu WHERE rest_menu_Price <= '200')";
+   // $query = "SELECT rest_menu_Name FROM rest_menu WHERE rest_menu_Price <= '150'";
+    
+    $query = "SELECT rest_menu_Name FROM rest_menu WHERE rest_menu_Price <= $price";
     
     
     $result = mysqli_query($db, $query) or die('Error querying database.');
-    $affected_rows = mysqli_affected_rows($db);
- 
-    if($affected_rows ==0){
-        echo "<span class='nothing' style='position:absolute;left:350px;top:200px;width:661px;height:30px;color:#E74C3C;font-family:'Trebuchet MS';font-size:35px;'>SORRY!  NOTHING IN THIS PRICE RANGE. PLEASE TRY AGAIN WITH DIFERENT RANGE.</span><br><br>";
+    //$count = mysqli_query($db, $query1) or die('Error querying database2.');
+    //echo $count;
+    while ($row = mysqli_fetch_array($result)) {
+        echo $row['rest_menu_Name'];
         
-    }
-    else{
-        echo "<div class='scrollit'>";
-        echo "<table id='resulttable' border = 1>";
-        echo "<tr><td>PHOTO</td><td>FOOD NAME</td><td>RESTAURANT NAME</td><td>LOCATION</td><td>PRICE</td><td>SEATING CAPACITY</td><td>PARKING CAPACITY</td><td>CONTACT</td><td>DETAILS</td></tr>\n";
-            
-        
-            
-
-        while ($row = mysqli_fetch_assoc($result)) {
-            echo "<tr><td>PHOTO</td><td>{$row['rest_menu_Name']}</td><td>{$row['rest_Name']}</td><td>{$row['rest_name_Location']}</td><td>{$row['rest_menu_Price']}</td><td>{$row['rest_SeatingCapacity']}</td><td>{$row['rest_ParkingCapacity']}</td><td>0{$row['rest_Contact']}</td><td><a href='./details.php?restID={$row['rest_ID']}&restmenuID={$row['rest_menu_ID']}&lat=$lat &lon=$lon'>DETAILS</a></td></tr>\n";
-
+        /*
+        if(row[rest_menu_Price<=price]){
+            echo $row['rest_menu_Name'];
         }
-        echo "</table>";
-        
-        echo "</div>";
+        else{
+            printf("Sorry Nothing in this Price Range!");
+        }*/
     }
-        
-        
-        
-  ///////////distance check///////
+    //Step2
+/*
+//Step3
+$result = mysqli_query($db, $query);
+
+while ($row = mysqli_fetch_assoc($result)) {
+if(row[rest_menu_Price<=price]){
+    echo price;
+}
+else{
+    printf("Sorry Noting in this Price Range!");
+    }
+ echo $row['user_ID'] . ' ' . $row['user_Name'] . ': ' . $row['user_Location'] . ' ' . $row['user_Contact'] .'<br />';
+}
+//Step 4
+
+    
+///////////distance check///////
     function check_distance($latitude1, $longitude1, $latitude2, $longitude2){
     
     $distance = getDistance( 56.130366, -106.34677099999, 57.223366, -106.34675644699 );
@@ -677,9 +647,53 @@ function getDistance( $latitude1, $longitude1, $latitude2, $longitude2 ) {
     return $d;  
 }
     //////////////
- 
+    */
+ if(isset($_GET['Name'])){
+     $tes = $_POST['Name'];
+    echo $tes;     
+ } 
+$query = "SELECT rest_menu_Photo FROM rest_menu WHERE rest_menu_ID =1";
+mysqli_query($db, $query) or die('Error querying database.');
 
-    ?>
+//Step3
+$result = mysqli_query($db, $query);
+$row = mysqli_fetch_array($result);?>
+<?php
+mysqli_close($db);
+?>
+
+
+    
+    
+  
+    <div style="overflow-x:auto;overflow-y:auto;position:absolute;left:305px;top:320px;width:800px;height:940px;z-index:20">
+  <table>
+    <tr>
+      <th>Photo</th>
+      <th>Food Name</th>
+      <th>Restaurant</th>
+      <th>Location</th>
+      <th>Contents</th>
+      <th>Capacity</th>
+      <th>Parking</th>
+      <th>Contact</th>
+      <th>Email</th>
+    </tr>
+    <tr>
+      <td><img src="<?php echo $row['rest_menu_Photo']; ?>" height="150" width="150"></td>
+      <td>Smith</td>
+      <td>50</td>
+      <td>50</td>
+      <td>50</td>
+      <td>50</td>
+      <td>50</td>
+      <td>50</td>
+      <td>50</td>
+    </tr>
+  </table>
+</div>
+
+    
     
     
     
@@ -721,10 +735,9 @@ function getDistance( $latitude1, $longitude1, $latitude2, $longitude2 ) {
 </li>
 </ul>
 </div>
+<a href="http://www.wysiwygwebbuilder.com" target="_blank"><img src="images/builtwithwwb12.png" alt="WYSIWYG Web Builder" style="position:absolute;left:713px;top:869px;border-width:0;z-index:250"></a>
 <div id="Banner1" style="position:absolute;left:148px;top:95px;width:488px;height:17px;z-index:6"><span>FIND THE PERFECT FOOD CHAIN</span></div>
-<div id="Banner2" style="position:absolute;left:300px;top:155px;width:488px;height:17px;z-index:6;color:#156af2;font-family:'Trebuchet MS';font-size:30px;"><span>SEARCH RESULT</span></div>
-
-    <div id="wb_Line1" style="position:absolute;left:12px;top:66px;width:785px;height:3px;z-index:7;">
+<div id="wb_Line1" style="position:absolute;left:12px;top:66px;width:785px;height:3px;z-index:7;">
 <img src="images/img0007.png" id="Line1" alt=""></div>
 </div>
 <div id="Layer4" style="position:absolute;text-align:center;left:0px;top:845px;width:100%;height:55px;z-index:8;">
