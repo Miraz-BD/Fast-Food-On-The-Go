@@ -1573,7 +1573,7 @@ div.scrollit{
         //echo $menuid;
           
           
-          $query = "SELECT rest_info.rest_ID, rest_info.rest_Name, rest_info.rest_name_Location, rest_info.rest_loc_Lat, rest_info.rest_loc_Long, rest_info.rest_Contact, rest_info.rest_ParkingCapacity, rest_info.rest_SeatingCapacity, rest_menu.rest_menu_Photo, rest_menu.rest_menu_ID, rest_menu.rest_menu_Name, rest_menu.rest_menu_Price FROM rest_menu INNER JOIN rest_info ON rest_menu.rest_menu_rest_ID = rest_info.rest_ID WHERE rest_menu_ID = $menuid AND rest_ID=$restid";
+          $query = "SELECT rest_info.rest_ID, rest_info.rest_Name, rest_info.rest_name_Location, rest_info.rest_loc_Lat, rest_info.rest_loc_Long, rest_info.rest_Contact, rest_info.rest_ParkingCapacity, rest_info.rest_SeatingCapacity, rest_info.rest_Photo, rest_menu.rest_menu_Photo, rest_menu.rest_menu_ID, rest_menu.rest_menu_Name, rest_menu.rest_menu_Price FROM rest_menu INNER JOIN rest_info ON rest_menu.rest_menu_rest_ID = rest_info.rest_ID WHERE rest_menu_ID = $menuid AND rest_ID=$restid";
           
         $db = mysqli_connect('localhost','root','','restaurant')
         or die('Error connecting to MySQL server.');
@@ -1592,7 +1592,7 @@ div.scrollit{
             $endlon = $row['rest_loc_Long'];
             //echo $endlon;
             
-           echo "<tr><td>PHOTO</td></tr><tr><td>{$row['rest_menu_Name']}</td></tr><tr><td>{$row['rest_Name']}</td></tr><tr><td>{$row['rest_name_Location']}</td></tr><tr><td>Price- {$row['rest_menu_Price']}</td></tr><tr><td>Seating- {$row['rest_SeatingCapacity']}</td></tr><tr><td>Parking- {$row['rest_ParkingCapacity']}</td></tr><tr><td>Contact- 0{$row['rest_Contact']}</td></tr>\n";
+           echo "<tr><td><img src={$row['rest_Photo']} height='200' width='300'/></td></tr><tr><td>{$row['rest_menu_Name']}</td></tr><tr><td>{$row['rest_Name']}</td></tr><tr><td>{$row['rest_name_Location']}</td></tr><tr><td>Price- {$row['rest_menu_Price']}</td></tr><tr><td>Seating- {$row['rest_SeatingCapacity']}</td></tr><tr><td>Parking- {$row['rest_ParkingCapacity']}</td></tr><tr><td>Contact- 0{$row['rest_Contact']}</td></tr>\n";
 
         }
     
