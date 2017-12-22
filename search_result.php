@@ -611,14 +611,20 @@ $(document).ready(function()
     //echo $parking;
     //echo $lat;
     //echo $lon;
-    if($name==="nothing"){
+    if($name==="nothing" && $parking==="false"){
         $query = "SELECT rest_info.rest_ID, rest_info.rest_Name, rest_info.rest_name_Location, rest_info.rest_loc_Lat, rest_info.rest_loc_Long, rest_info.rest_Contact, rest_info.rest_ParkingCapacity, rest_info.rest_SeatingCapacity, rest_menu.rest_menu_Photo, rest_menu.rest_menu_ID, rest_menu.rest_menu_Name, rest_menu.rest_menu_Price FROM rest_menu INNER JOIN rest_info ON rest_menu.rest_menu_rest_ID = rest_info.rest_ID WHERE rest_menu_Price <= $price";
             }
-    else{
+    else if($name==="nothing" && $parking==="true"){
+        $query = "SELECT rest_info.rest_ID, rest_info.rest_Name, rest_info.rest_name_Location, rest_info.rest_loc_Lat, rest_info.rest_loc_Long, rest_info.rest_Contact, rest_info.rest_ParkingCapacity, rest_info.rest_SeatingCapacity, rest_menu.rest_menu_Photo, rest_menu.rest_menu_ID, rest_menu.rest_menu_Name, rest_menu.rest_menu_Price FROM rest_menu INNER JOIN rest_info ON rest_menu.rest_menu_rest_ID = rest_info.rest_ID WHERE rest_menu_Price <= $price AND rest_info.rest_ParkingCapacity >0";
+            }
+    else if($parking==="true"){
         
         //$query = "SELECT rest_menu_Name FROM rest_menu WHERE rest_menu_Name LIKE '%$name%' AND rest_menu_Price<=$price";
-        $query = "SELECT rest_info.rest_ID, rest_info.rest_Name, rest_info.rest_name_Location, rest_info.rest_loc_Lat, rest_info.rest_loc_Long, rest_info.rest_Contact, rest_info.rest_ParkingCapacity, rest_info.rest_SeatingCapacity, rest_menu.rest_menu_Photo, rest_menu.rest_menu_ID, rest_menu.rest_menu_Name, rest_menu.rest_menu_Price FROM rest_menu INNER JOIN rest_info ON rest_menu.rest_menu_rest_ID = rest_info.rest_ID WHERE rest_menu_Name LIKE '%$name%' AND rest_menu_Price<=$price";
+        $query = "SELECT rest_info.rest_ID, rest_info.rest_Name, rest_info.rest_name_Location, rest_info.rest_loc_Lat, rest_info.rest_loc_Long, rest_info.rest_Contact, rest_info.rest_ParkingCapacity, rest_info.rest_SeatingCapacity, rest_menu.rest_menu_Photo, rest_menu.rest_menu_ID, rest_menu.rest_menu_Name, rest_menu.rest_menu_Price FROM rest_menu INNER JOIN rest_info ON rest_menu.rest_menu_rest_ID = rest_info.rest_ID WHERE rest_menu_Name LIKE '%$name%' AND rest_menu_Price<=$price AND rest_info.rest_ParkingCapacity >0" ;
         //echo $query;
+    }
+    else{
+        $query = "SELECT rest_info.rest_ID, rest_info.rest_Name, rest_info.rest_name_Location, rest_info.rest_loc_Lat, rest_info.rest_loc_Long, rest_info.rest_Contact, rest_info.rest_ParkingCapacity, rest_info.rest_SeatingCapacity, rest_menu.rest_menu_Photo, rest_menu.rest_menu_ID, rest_menu.rest_menu_Name, rest_menu.rest_menu_Price FROM rest_menu INNER JOIN rest_info ON rest_menu.rest_menu_rest_ID = rest_info.rest_ID WHERE rest_menu_Name LIKE '%$name%' AND rest_menu_Price<=$price" ;
     }
     
     $db = mysqli_connect('localhost','root','','restaurant')
@@ -631,7 +637,7 @@ $(document).ready(function()
     $affected_rows = mysqli_affected_rows($db);
  
     if($affected_rows ==0){
-        echo "<span class='nothing' style='position:absolute;left:350px;top:200px;width:661px;height:30px;color:#E74C3C;font-family:'Trebuchet MS';font-size:35px;'>SORRY!  NOTHING IN THIS PRICE RANGE. PLEASE TRY AGAIN WITH DIFERENT RANGE.</span><br><br>";
+        echo "<div class='nothing' style='position:absolute;left:350px;top:300px;width:661px;height:30px;color:#E74C3C;font-family:'Trebuchet MS';font-size:35px;'>SORRY!  NOTHING IN THIS PRICE RANGE. PLEASE TRY AGAIN WITH DIFERENT RANGE.</div>";
         
     }
     else{
@@ -643,7 +649,7 @@ $(document).ready(function()
             
 
         while ($row = mysqli_fetch_assoc($result)) {
-            echo "<tr><td>PHOTO</td><td>{$row['rest_menu_Name']}</td><td>{$row['rest_Name']}</td><td>{$row['rest_name_Location']}</td><td>{$row['rest_menu_Price']}</td><td>{$row['rest_SeatingCapacity']}</td><td>{$row['rest_ParkingCapacity']}</td><td>0{$row['rest_Contact']}</td><td><a href='./details.php?restID={$row['rest_ID']}&restmenuID={$row['rest_menu_ID']}&lat=$lat &lon=$lon'>DETAILS</a></td></tr>\n";
+            echo "<tr><td><img src={$row['rest_menu_Photo']} height='200' width='300'/></td><td>{$row['rest_menu_Name']}</td><td>{$row['rest_Name']}</td><td>{$row['rest_name_Location']}</td><td>{$row['rest_menu_Price']}</td><td>{$row['rest_SeatingCapacity']}</td><td>{$row['rest_ParkingCapacity']}</td><td>0{$row['rest_Contact']}</td><td><a href='./details.php?restID={$row['rest_ID']}&restmenuID={$row['rest_menu_ID']}&lat=$lat &lon=$lon'>DETAILS</a></td></tr>\n";
 
         }
         echo "</table>";
@@ -722,7 +728,7 @@ function getDistance( $latitude1, $longitude1, $latitude2, $longitude2 ) {
 </ul>
 </div>
 <div id="Banner1" style="position:absolute;left:148px;top:95px;width:488px;height:17px;z-index:6"><span>FIND THE PERFECT FOOD CHAIN</span></div>
-<div id="Banner2" style="position:absolute;left:300px;top:155px;width:488px;height:17px;z-index:6;color:#156af2;font-family:'Trebuchet MS';font-size:30px;"><span>SEARCH RESULT</span></div>
+<div id="Banner2" style="position:absolute;left:250px;top:150px;width:488px;height:17px;z-index:6;color:#156af2;font-family:'Trebuchet MS';font-size:30px;"><span>SHOWING <?php echo $affected_rows?> RESULTS</span></div>
 
     <div id="wb_Line1" style="position:absolute;left:12px;top:66px;width:785px;height:3px;z-index:7;">
 <img src="images/img0007.png" id="Line1" alt=""></div>

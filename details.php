@@ -1413,54 +1413,14 @@ div#container
 <script src="wb.animatetext.min.js"></script>
 
 <style>
-#slidecontainer {
-    width: 25%;
-}
-
-.slider {
-    -webkit-appearance: none;
-    width: 100%;
-    height: 15px;
-    border-radius: 5px;
-    background: #d3d3d3;
-    outline: none;
-    opacity: 0.7;
-    -webkit-transition: .2s;
-    transition: opacity .2s;
-}
-
-.slider:hover {
-    opacity: 10;
-}
-
-.slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: #4CAF50;
-    cursor: pointer;
-}
-
-.slider::-moz-range-thumb {
-    width: 23px;
-    height: 24px;
-    border-radius: 50%;
-    background: #4CAF50;
-    cursor: pointer;
-}
-    
-    
-       
 #resulttable {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     font-size: 13px;
     vertical-align:top;
-    width: 500%;
+    width: 99%;
     position: relative;
     left: 5px;
-    top: 5px;
+    top: -4px;
     right:auto;
     border: 0px solid #73AD21;
     
@@ -1484,19 +1444,32 @@ div#container
 }
     
 .scrollit {
-    overflow:auto;
-    height:400px;
+    overflow:hidden;
+    height:480px;
 }
 div.scrollit{
     
     position: relative;
-    width: 45%;
-    left: 100px;
+    width: 55%;
+    left: 10px;
     top: 210px;
     border: 3px solid #73AD21;
     text-wrap: normal;
     word-wrap: break-word;
     }
+
+div.starit{
+    
+    position: relative;
+    width: 20%;
+    left: 545px;
+    top: -230px;
+    border: 0px solid #73AD21;
+    background-color: antiquewhite;
+    }
+div.starit:hover {
+    opacity: 20%;
+    background-color: #ddd;}
 </style>
 
 <!-- Insert Google Analytics code here -->
@@ -1507,11 +1480,11 @@ div.scrollit{
     
 <div id="container">
     
-<div id="wb_REVIEW_BOX" style="position:absolute;left:426px;top:561px;width:287px;height:149px;z-index:1;">
+<div id="wb_REVIEW_BOX" style="position:absolute;left:426px;top:761px;width:287px;height:149px;z-index:1;">
     <img src="images/img0011.png" id="REVIEW_BOX" alt="" style="width:287px;height:149px;">
 </div>
     
-<div id="wb_DINING_BOX" style="position:absolute;left:81px;top:561px;width:287px;height:149px;z-index:2;">
+<div id="wb_DINING_BOX" style="position:absolute;left:81px;top:761px;width:287px;height:149px;z-index:2;">
     <img src="images/img0012.png" id="DINING_BOX" alt="" style="width:287px;height:149px;">
 </div>
     
@@ -1574,7 +1547,8 @@ div.scrollit{
           
           
           $query = "SELECT rest_info.rest_ID, rest_info.rest_Name, rest_info.rest_name_Location, rest_info.rest_loc_Lat, rest_info.rest_loc_Long, rest_info.rest_Contact, rest_info.rest_ParkingCapacity, rest_info.rest_SeatingCapacity, rest_info.rest_Photo, rest_menu.rest_menu_Photo, rest_menu.rest_menu_ID, rest_menu.rest_menu_Name, rest_menu.rest_menu_Price FROM rest_menu INNER JOIN rest_info ON rest_menu.rest_menu_rest_ID = rest_info.rest_ID WHERE rest_menu_ID = $menuid AND rest_ID=$restid";
-          
+            
+        $query1 = "SELECT rest_review_review_star FROM rest_place_review WHERE rest_review_rest_ID = $restid";
         $db = mysqli_connect('localhost','root','','restaurant')
         or die('Error connecting to MySQL server.');
    
@@ -1583,7 +1557,7 @@ div.scrollit{
     
         $result = mysqli_query($db, $query) or die('Error querying database.');
             echo "<div class='scrollit'>";
-            echo "<table id='resulttable' border = 0>";    
+            echo "<table id='resulttable' width=10>";    
             echo "<tr><td> </td></tr>\n";
            while ($row = mysqli_fetch_assoc($result)) {
             $endlat = $row['rest_loc_Lat'];
@@ -1592,19 +1566,44 @@ div.scrollit{
             $endlon = $row['rest_loc_Long'];
             //echo $endlon;
             
-           echo "<tr><td><img src={$row['rest_Photo']} height='200' width='300'/></td></tr><tr><td>{$row['rest_menu_Name']}</td></tr><tr><td>{$row['rest_Name']}</td></tr><tr><td>{$row['rest_name_Location']}</td></tr><tr><td>Price- {$row['rest_menu_Price']}</td></tr><tr><td>Seating- {$row['rest_SeatingCapacity']}</td></tr><tr><td>Parking- {$row['rest_ParkingCapacity']}</td></tr><tr><td>Contact- 0{$row['rest_Contact']}</td></tr>\n";
+           echo "<tr><td><img src={$row['rest_Photo']} height='200' width='300'/></td></tr><tr><td>Item Name- {$row['rest_menu_Name']}</td></tr><tr><td>{$row['rest_Name']}</td></tr><tr><td>{$row['rest_name_Location']}</td></tr><tr><td>Price- {$row['rest_menu_Price']}</td></tr><tr><td>Seating- {$row['rest_SeatingCapacity']}</td></tr><tr><td>Parking- {$row['rest_ParkingCapacity']}</td></tr><tr><td>Contact- 0{$row['rest_Contact']}</td></tr>\n";
 
         }
     
         echo "</table>";
         
         echo "</div>";
+        
+         $starresult = mysqli_query($db, $query1) or die('Error querying database.');
+            echo "<div class='starit'>";   
+            $average = 0;
+            $totalreview = mysqli_affected_rows($db);
+             while ($row = mysqli_fetch_assoc($starresult)) {
+                $average = $average + $row['rest_review_review_star'];
+             }
+            $star = $average/$totalreview;
+    
+    
+        for($x=1;$x<=$star;$x++) {
+            echo '<img src="./images/full_star.png" height="30" width="32"/>';
+        }
+        if (strpos($star,'.')) {
+            echo '<img src="./images/half_star.png" height="30" width="32"/>';
+            $x++;
+        }
+        while ($x<=5) {
+            echo '<img src="./images/blank_star.png" height="30" width="32"/>';
+            $x++;
+        }
+    
+        echo "</div>";
+        
 ?>
     
     <script type="text/javascript" src="script.js"></script>
 
  
-<div id="map" style="position:absolute;left:480px;top:208px;width:303px;height:331px;z-index:20;">
+<div id="map" style="position:absolute;left:480px;top:350px;width:303px;height:331px;z-index:20;">
     <div id="map"></div>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAaM3Z3MQLaz4qlF702jUoYhmRdsJCktgs&callback=initMap">
@@ -1665,23 +1664,23 @@ div.scrollit{
 <img src="images/img0004.png" id="Line1" alt=""></div>
 
 
-<div id="wb_ICON_DINING" style="position:absolute;left:184px;top:531px;width:82px;height:51px;text-align:center;z-index:23;">
+<div id="wb_ICON_DINING" style="position:absolute;left:184px;top:731px;width:82px;height:51px;text-align:center;z-index:23;">
 <div id="ICON_DINING"><i class="material-icons">&#xe561;</i></div></div>
-<div id="wb_ICON_REVIEW" style="position:absolute;left:565px;top:523px;width:62px;height:51px;text-align:center;z-index:24;">
+<div id="wb_ICON_REVIEW" style="position:absolute;left:565px;top:723px;width:62px;height:51px;text-align:center;z-index:24;">
 <div id="ICON_REVIEW"><i class="fa fa-thumbs-o-up">&nbsp;</i></div></div>
-<div id="wb_ICON_REVIEW" style="position:absolute;left:502px;top:523px;width:63px;height:51px;text-align:center;z-index:25;">
+<div id="wb_ICON_REVIEW" style="position:absolute;left:502px;top:723px;width:63px;height:51px;text-align:center;z-index:25;">
 <div id="ICON_REVIEW"><i class="fa fa-thumbs-o-down">&nbsp;</i></div></div>
-<div id="wb_DINING_HEADING" style="position:absolute;left:93px;top:581px;width:262px;height:39px;opacity:0.95;z-index:26;">
+<div id="wb_DINING_HEADING" style="position:absolute;left:93px;top:781px;width:262px;height:39px;opacity:0.95;z-index:26;">
 <img src="images/img0013.png" id="DINING_HEADING" alt="Find the quickest place to eat at" title="Find the quickest place to eat at" style="width:262px;height:39px;"></div>
-<div id="wb_REVIEW_HEADING" style="position:absolute;left:446px;top:585px;width:246px;height:30px;opacity:0.95;z-index:27;">
+<div id="wb_REVIEW_HEADING" style="position:absolute;left:446px;top:785px;width:246px;height:30px;opacity:0.95;z-index:27;">
 <img src="images/img0014.png" id="REVIEW_HEADING" alt="See the latest Reviews" title="See the latest Reviews" style="width:246px;height:30px;"></div>
-<div id="wb_Line2" style="position:absolute;left:102px;top:611px;width:223px;height:2px;z-index:28;">
+<div id="wb_Line2" style="position:absolute;left:102px;top:811px;width:223px;height:2px;z-index:28;">
 <img src="images/img0015.png" id="Line2" alt=""></div>
-<div id="wb_Line3" style="position:absolute;left:451px;top:611px;width:223px;height:2px;z-index:29;">
+<div id="wb_Line3" style="position:absolute;left:451px;top:811px;width:223px;height:2px;z-index:29;">
 <img src="images/img0016.png" id="Line3" alt=""></div>
-<div id="wb_DINING_TEXT" style="position:absolute;left:117px;top:630px;width:214px;height:48px;z-index:30;">
+<div id="wb_DINING_TEXT" style="position:absolute;left:117px;top:830px;width:214px;height:48px;z-index:30;">
 <span style="color:#000000;font-family:Arial;font-size:13px;">Find Everything - from Street Food to Fine Dining. Everything at the swipe of a finger!</span></div>
-<div id="wb_REVIEW_TEXT" style="position:absolute;left:462px;top:630px;width:214px;height:32px;z-index:31;">
+<div id="wb_REVIEW_TEXT" style="position:absolute;left:462px;top:830px;width:214px;height:32px;z-index:31;">
 <span style="color:#000000;font-family:Arial;font-size:13px;">Hundreds of Reviews from our Community</span></div>
 </div>
 <div id="FOOTER_BANNER" style="position:absolute;text-align:center;left:0px;top:845px;width:100%;height:55px;z-index:32;">
