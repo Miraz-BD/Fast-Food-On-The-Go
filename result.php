@@ -1453,7 +1453,7 @@ div.scrollit{
     width: 55%;
     left: 10px;
     top: 210px;
-    border: 3px solid #73AD21;
+   
     text-wrap: normal;
     word-wrap: break-word;
     }
@@ -1471,113 +1471,7 @@ div.starit:hover {
     opacity: 20%;
     background-color: #ddd;}
     
-    
-
-#resulttable2 {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size: 13px;
-    vertical-align:top;
-    width: 99%;
-    position: relative;
-    left: 5px;
-    top: 50px;
-    right:auto;
-    border: 0px solid #73AD21;
-    
-}
-
-#resulttable2 td, #resulttable2 th {
-    border: 3px solid #ddd;
-    padding: 5px;
-}
-
-#resulttable2 tr:nth-child(even){background-color: #f2f2f2;}
-
-#resulttable2 tr:hover {background-color: #ddd;}
-
-#resulttable2 th {
-    padding-top: 0px;
-    padding-bottom: 0px;
-    text-align:center;
-    background-color: #4CAF50;
-    color: white;
-}
-    
-.scrollit2 {
-    overflow:hidden;
-    height:480px;
-}
-div.scrollit2{
-    
-    position: relative;
-    width: 55%;
-    left: 10px;
-    top: 210px;
-    border: 0px solid #73AD21;
-    text-wrap: normal;
-    word-wrap: break-word;
-    }
-
-div.starit2{
-    
-    position: relative;
-    width: 20%;
-    left: 545px;
-    top: -230px;
-    border: 0px solid #73AD21;
-    background-color: antiquewhite;
-    }
-div.starit2:hover {
-    opacity: 20%;
-    background-color: #ddd;}
-
-#resulttable3 {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size: 13px;
-    vertical-align:top;
-    width: 99%;
-    position: relative;
-    left: 5px;
-    top: 50px;
-    right:auto;
-    border: 0px solid #73AD21;
-    
-}
-
-#resulttable3 td, #resulttable2 th {
-    border: 3px solid #ddd;
-    padding: 5px;
-}
-
-#resulttable3 tr:nth-child(even){background-color: #f2f2f2;}
-
-#resulttable3 tr:hover {background-color: #ddd;}
-
-#resulttable3 th {
-    padding-top: 0px;
-    padding-bottom: 0px;
-    text-align:center;
-    background-color: #4CAF50;
-    color: white;
-}
-    
-.scrollit3 {
-    overflow:hidden;
-    height:150px;
-}
-div.scrollit3{
-    
-    position: relative;
-    width: 25%;
-    left: 500px;
-    top: -200px;
-    border: 0px solid #73AD21;
-    text-wrap: normal;
-    word-wrap: break-word;
-    }
-
-
-    </style>
+  </style>
 
 <!-- Insert Google Analytics code here -->
 </head>
@@ -1587,9 +1481,6 @@ div.scrollit3{
     
 <div id="container">
 
-<div id="SlideShow_BACKGROUND" style="position:absolute;left:34px;top:158px;width:749px;height:331px;z-index:3;">
-    
-</div>
 
 <div id="wb_PAGE_HEADLINE_TEXT" style="position:absolute;left:12px;top:22px;width:269px;height:21px;z-index:5;">
     <span style="color:#05467E;font-family:'Lucida Console';font-size:21px;"><strong>FASTFOOD ON-THE-GO</strong></span>
@@ -1634,20 +1525,10 @@ div.scrollit3{
     
     
 <?php
-        $restid = $_GET["restID"];
-        $menuid = $_GET["restmenuID"];
-        $lat = $_GET["lat"];
-        $lon = $_GET["lon"];
-           
-        //echo $lat;
-        //echo $lon;
-        //echo $restid;
-        //echo $menuid;
-          
-          
-          $query = "SELECT rest_info.rest_ID, rest_info.rest_Name, rest_info.rest_name_Location, rest_info.rest_loc_Lat, rest_info.rest_loc_Long, rest_info.rest_Contact, rest_info.rest_ParkingCapacity, rest_info.rest_SeatingCapacity, rest_info.rest_Photo, rest_menu.rest_menu_Photo, rest_menu.rest_menu_ID, rest_menu.rest_menu_Name, rest_menu.rest_menu_Price FROM rest_menu INNER JOIN rest_info ON rest_menu.rest_menu_rest_ID = rest_info.rest_ID WHERE rest_menu_ID = $menuid AND rest_ID=$restid";
+        $rest = $_GET["name"];
+        
+          $query = "SELECT * FROM rest_info WHERE rest_Name LIKE '%$rest%'";
             
-        $query1 = "SELECT rest_review_review_star FROM rest_place_review WHERE rest_review_rest_ID = $restid";
         $db = mysqli_connect('localhost','root','','restaurant')
         or die('Error connecting to MySQL server.');
    
@@ -1659,10 +1540,11 @@ div.scrollit3{
             echo "<table id='resulttable' width=10>";    
             echo "<tr><td> </td></tr>\n";
            while ($row = mysqli_fetch_assoc($result)) {
-            $endlat = $row['rest_loc_Lat'];            
+            $endlat = $row['rest_loc_Lat'];
             $endlon = $row['rest_loc_Long'];
-            
-           echo "<tr><td align='center'><img src={$row['rest_Photo']} height='200' width='300'/></td></tr><tr><td>Item Name- {$row['rest_menu_Name']}</td></tr><tr><td>{$row['rest_Name']}</td></tr><tr><td>{$row['rest_name_Location']}</td></tr><tr><td>Price- {$row['rest_menu_Price']}</td></tr><tr><td>Seating- {$row['rest_SeatingCapacity']}</td></tr><tr><td>Parking- {$row['rest_ParkingCapacity']}</td></tr><tr><td>Contact- 0{$row['rest_Contact']}</td></tr>\n";
+            $restid = $row['rest_ID'];
+               
+           echo "<tr><td><img src={$row['rest_Photo']} height='200' width='300'/></td></tr><tr><td>{$row['rest_Name']}</td></tr><tr><td>{$row['rest_name_Location']}</td></tr><tr><td>Seating- {$row['rest_SeatingCapacity']}</td></tr><tr><td>Parking- {$row['rest_ParkingCapacity']}</td></tr><tr><td>Contact- 0{$row['rest_Contact']}</td></tr>\n";
 
         }
     
@@ -1670,6 +1552,7 @@ div.scrollit3{
         
         echo "</div>";
         
+        $query1 = "SELECT rest_review_review_star FROM rest_place_review WHERE rest_review_rest_ID= $restid";
          $starresult = mysqli_query($db, $query1) or die('Error querying database.');
             echo "<div class='starit'>";   
             $average = 0;
@@ -1698,139 +1581,29 @@ div.scrollit3{
     
     
     
-    
-    $query2 = "SELECT rest_info.rest_ID, rest_info.rest_Name, rest_info.rest_name_Location, rest_info.rest_loc_Lat, rest_info.rest_loc_Long, rest_info.rest_Contact, rest_info.rest_ParkingCapacity, rest_info.rest_SeatingCapacity, rest_info.rest_Photo, rest_menu.rest_menu_Photo, rest_menu.rest_menu_ID, rest_menu.rest_menu_Name, rest_menu.rest_menu_Price, rest_menu.rest_menu_Contents FROM rest_menu INNER JOIN rest_info ON rest_menu.rest_menu_rest_ID = rest_info.rest_ID WHERE rest_menu_ID = $menuid AND rest_ID=$restid";
-            
-    
-        
-        $result = mysqli_query($db, $query2) or die('Error querying database.');
-            echo "<div class='scrollit2'>";
-            echo "<table id='resulttable2' width=10>";    
-            echo "<tr><td> </td></tr>\n";
-           while ($row = mysqli_fetch_assoc($result)) {
-            $endlat = $row['rest_loc_Lat'];
-            //echo $endlat;
-            
-            $endlon = $row['rest_loc_Long'];
-            //echo $endlon;
-            
-           echo "<tr><td align='center'><img src={$row['rest_menu_Photo']} height='200' width='300'/></td></tr><tr><td>Item Name- {$row['rest_menu_Name']}</td></tr><tr><td>Contents- {$row['rest_menu_Contents']}</td></tr><tr><td>Price- {$row['rest_menu_Price']}</td></tr>\n";
-
-        }
-    
-        echo "</table>";
-        
-        echo "</div>";
-        
-    
-    
-    $query3 = "SELECT food_review_review_star FROM rest_food_review WHERE food_review_rest_ID = $restid AND food_review_rest_menu_ID = $menuid";
-    $starresult1 = mysqli_query($db, $query3) or die('Error querying database.');
-            echo "<div class='starit2'>";   
-            $average1 = 0;
-            $totalreview1 = mysqli_affected_rows($db);
-            if($totalreview1 == 0){
-                echo "Sorry No review yet!";
-            }
-            else{
-                    while ($row = mysqli_fetch_assoc($starresult1)) {
-                        $average1 = $average1 + $row['food_review_review_star'];
-                     }
-                    $star1 = $average1/$totalreview1;
-
-
-                for($x=1;$x<=$star1;$x++) {
-                    echo '<img src="./images/full_star.png" height="30" width="32"/>';
-                }
-                if (strpos($star1,'.')) {
-                    echo '<img src="./images/half_star.png" height="30" width="32"/>';
-                    $x++;
-                }
-                while ($x<=5) {
-                    echo '<img src="./images/blank_star.png" height="30" width="32"/>';
-                    $x++;
-                }
-
-
-
-            }
-        echo "</div>";
-        
-    
-    $query4 = "SELECT rest_food_review.food_review_review, user_info.user_Name FROM rest_food_review INNER JOIN user_info ON food_review_user_ID = user_info.user_ID WHERE food_review_rest_menu_ID = $menuid AND food_review_rest_ID=$restid";
-            
-    
-        
-        $result = mysqli_query($db, $query4) or die('Error querying database.');
-            echo "<div class='scrollit3'>";
-            echo "<table id='resulttable3' width=5 >";    
-            echo "<tr><td align='center'>REVIEWS- </td></tr>\n";
-           while ($row = mysqli_fetch_assoc($result)) {
-            
-               echo "<tr><td>{$row['food_review_review']}</td></tr>\n";
-               echo "<tr><td align='right'>---------{$row['user_Name']}</td></tr>\n";
-
-        }
-    
-        echo "</table>";
-        
-        echo "</div>";
-        
-    
-    
     ?>
     
     <script type="text/javascript" src="script.js"></script>
 
  
-<div id="map" style="position:absolute;left:480px;top:350px;width:303px;height:331px;z-index:20;">
+<div id="map" style="position:absolute;left:480px;top:320px;width:303px;height:331px;z-index:20;">
     <div id="map"></div>
     <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAaM3Z3MQLaz4qlF702jUoYhmRdsJCktgs&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4WJFE_RTgvM-ExbPoCBMTmkMXbFuKf08&callback=initMap">
     </script>
     <script>
-        var startlat = "<?php echo $lat ?>";
-        var startlon = "<?php echo $lon ?>";
-        var comma = ',';
-        var start = startlat+comma+startlon;
-        //alert(start);
-        /////////
-        var endlat = "<?php echo $endlat ?>";
-        var endlon = "<?php echo $endlon ?>";
-        var end = endlat+comma+endlon;
-        //alert(end);
-        
-        
       function initMap() {
-        var directionsService = new google.maps.DirectionsService;
-        var directionsDisplay = new google.maps.DirectionsRenderer;
+        var uluru = {lat: <?php echo $endlat ?>, lng: <?php echo $endlon ?>};
         var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 14,
-          center: {lat: 23.81, lng: 90.41}
+          zoom: 16,
+          center: uluru
         });
-        directionsDisplay.setMap(map);
-
-        calculateAndDisplayRoute(directionsService, directionsDisplay);
-      }
-
-      function calculateAndDisplayRoute(directionsService, directionsDisplay) {
-        directionsService.route({
-          origin: start,
-          destination: end,
-          travelMode: 'DRIVING'
-        }, function(response, status) {
-          if (status === 'OK') {
-            directionsDisplay.setDirections(response);
-          } else {
-            window.alert('Directions request failed due to ' + status);
-          }
+        var marker = new google.maps.Marker({
+          position: uluru,
+          map: map
         });
       }
     </script>
-    
-    
-    
-
     </div>
     
     
@@ -1838,10 +1611,10 @@ div.scrollit3{
 </div>
 <div id="wb_Line1" style="position:absolute;left:12px;top:66px;width:785px;height:3px;z-index:9;">
 <img src="images/img0009.png" id="Line1" alt=""></div>
-<div id="Banner_FIND-THEPERFECT-FOODCHAIN" style="position:absolute;left:161px;top:155px;width:493px;height:40px;z-index:19"><span>DETAILS ABOUT THE OFFER</span>
+<div id="Banner_FIND-THEPERFECT-FOODCHAIN" style="position:absolute;left:161px;top:155px;width:493px;height:40px;z-index:19"><span>RESTAURANT DETAILS</span>
 </div>
 
-<div id="FOOTER_BANNER" style="position:absolute;text-align:center;left:0px;bottom:-30px;width:100%;height:55px;z-index:32;">
+<div id="FOOTER_BANNER" style="position:absolute;text-align:center;left:0px;bottom:-200px;width:100%;height:55px;z-index:32;">
 <div id="FOOTER_BANNER_Container" style="width:800px;position:relative;margin-left:auto;margin-right:auto;text-align:left;">
 <div id="wb_FOOTER" style="position:absolute;left:7px;top:22px;width:780px;height:16px;text-align:center;z-index:0;">
 <span style="color:#FFFFFF;font-family:'Trebuchet MS';font-size:11px;">Copyright © 2017 by &quot;Mirazur Rahman&quot;&nbsp; ·&nbsp; All Rights reserved&nbsp; ·&nbsp; E-Mail: mdmirazur@yahoo.com.sg</span></div>

@@ -1,3 +1,54 @@
+<?php
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['form_name']) && $_POST['form_name'] == 'loginform')
+{
+   $success_page = '';
+   $error_page = basename(__FILE__);
+   $database = './usersdb.php';
+   $crypt_pass = md5($_POST['password']);
+   $found = false;
+   $fullname = '';
+   $session_timeout = 600;
+   if(filesize($database) > 0)
+   {
+      $items = file($database, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+      foreach($items as $line)
+      {
+         list($username, $password, $email, $name, $active) = explode('|', trim($line));
+         if ($username == $_POST['username'] && $active != "0" && $password == $crypt_pass)
+         {
+            $found = true;
+            $fullname = $name;
+         }
+      }
+   }
+   if($found == false)
+   {
+      header('Location: '.$error_page);
+      exit;
+   }
+   else
+   {
+      if (session_id() == "")
+      {
+         session_start();
+      }
+      $_SESSION['username'] = $_POST['username'];
+      $_SESSION['fullname'] = $fullname;
+      $_SESSION['expires_by'] = time() + $session_timeout;
+      $_SESSION['expires_timeout'] = $session_timeout;
+      $rememberme = isset($_POST['rememberme']) ? true : false;
+      if ($rememberme)
+      {
+         setcookie('username', $_POST['username'], time() + 3600*24*30);
+         setcookie('password', $_POST['password'], time() + 3600*24*30);
+      }
+      header('Location: '.$success_page);
+      exit;
+   }
+}
+$username = isset($_COOKIE['username']) ? $_COOKIE['username'] : '';
+$password = isset($_COOKIE['password']) ? $_COOKIE['password'] : '';
+?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -144,20 +195,6 @@ a:hover
    height: 0;
    line-height: 0;
 }
-#wb_Text10 
-{
-   background-color: transparent;
-   background-image: none;
-   border: 0px #000000 solid;
-   padding: 0;
-   margin: 0;
-   text-align: left;
-}
-#wb_Text10 div
-{
-   text-align: left;
-   white-space: nowrap;
-}
 #wb_CssMenu2
 {
    border: 0px #DCDCDC solid;
@@ -226,46 +263,155 @@ a:hover
    height: 0;
    line-height: 0;
 }
-#wb_Text1 
+#wb_CssMenu3
 {
+   border: 0px #DCDCDC solid;
    background-color: transparent;
-   background-image: none;
-   border: 0px #000000 solid;
-   padding: 0;
+}
+#wb_CssMenu3 ul
+{
+   list-style-type: none;
    margin: 0;
-   text-align: left;
-}
-#wb_Text1 div
-{
-   text-align: left;
-}
-#wb_Text2 
-{
-   background-color: transparent;
-   background-image: none;
-   border: 0px #000000 solid;
    padding: 0;
+}
+#wb_CssMenu3 li
+{
+   float: left;
    margin: 0;
+   padding: 0px 0px 0px 0px;
+   width: 80px;
+}
+#wb_CssMenu3 a
+{
+   display: block;
+   float: left;
+   color: #696969;
+   border: 0px #C0C0C0 solid;
+   background-color: #F4F3F3;
+   background: -moz-linear-gradient(bottom,#F4F3F3 0%,#F4F3F3 100%);
+   background: -webkit-linear-gradient(bottom,#F4F3F3 0%,#F4F3F3 100%);
+   background: -o-linear-gradient(bottom,#F4F3F3 0%,#F4F3F3 100%);
+   background: -ms-linear-gradient(bottom,#F4F3F3 0%,#F4F3F3 100%);
+   background: linear-gradient(bottom,#F4F3F3 0%,#F4F3F3 100%);
+   font-family: Arial;
+   font-weight: bold;
+   font-size: 15px;
+   font-style: normal;
+   text-decoration: none;
+   width: 70px;
+   height: 70px;
+   padding: 0px 5px 0px 5px;
+   vertical-align: middle;
+   line-height: 70px;
+   text-align: center;
+}
+#wb_CssMenu3 li:hover a, #wb_CssMenu3 a:hover, #wb_CssMenu3 .active
+{
+   color: #696969;
+   background-color: #B9B9B9;
+   background: -moz-linear-gradient(bottom,#B9B9B9 0%,#EEEEEE 100%);
+   background: -webkit-linear-gradient(bottom,#B9B9B9 0%,#EEEEEE 100%);
+   background: -o-linear-gradient(bottom,#B9B9B9 0%,#EEEEEE 100%);
+   background: -ms-linear-gradient(bottom,#B9B9B9 0%,#EEEEEE 100%);
+   background: linear-gradient(bottom,#B9B9B9 0%,#EEEEEE 100%);
+   border: 0px #C0C0C0 solid;
+}
+#wb_CssMenu3 li.firstmain
+{
+   padding-left: 0px;
+}
+#wb_CssMenu3 li.lastmain
+{
+   padding-right: 0px;
+}
+#wb_CssMenu3 br
+{
+   clear: both;
+   font-size: 1px;
+   height: 0;
+   line-height: 0;
+}
+#Login1
+{
+   background-color: #FFFFFF;
+   border-color:#CCCCCC;
+   border-width:1px;
+   border-style: solid;
+   border-radius: 4px;
+   color: #000000;
+   border-spacing: 6px;
+   font-family: Arial;
+   font-weight: normal;
+   font-size: 13px;
+   text-align: left;
+   width: 377px;
+   height: 214px;
+}
+#Login1 td
+{
+   padding: 0;
+}
+#Login1 .header
+{
+   background-color: #878787;
+   color: #FFFFFF;
+   height: 16px;
+   padding: 4px 4px 4px 4px;
+   text-align: center;
+}
+#Login1 .label
+{
+   height: 16px;
+}
+#Login1 .row
+{
+   height: 30px;
    text-align: left;
 }
-#wb_Text2 div
+#Login1 .input
 {
-   text-align: left;
+   background-color: #FFFFFF;
+   border-color: #CCCCCC;
+   border-width: 1px;
+   border-style: solid;
+   border-radius: 2px;
+   color: #000000;
+   font-family: Arial;
+   font-weight: normal;
+   font-size: 13px;
+   width: 100%;
+   height: 30px;
+   -webkit-box-sizing: border-box;
+   -moz-box-sizing: border-box;
+   box-sizing: border-box;
+   padding: 6px 4px 6px 4px;
+}
+#Login1 .input:focus
+{
+   border-color: #66AFE9;
+   outline: 0;
+   -webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102,175,233,0.60);
+   -moz-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102,175,233,0.60);
+   box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102,175,233,0.60);
+}
+#Login1 .button
+{
+   background-color: #3370B7;
+   border-color: #2E6DA4;
+   border-width: 1px;
+   border-style: solid;
+   border-radius: 3px;
+   color: #FFFFFF;
+   font-family: Arial;
+   font-weight: normal;
+   font-size: 13px;
+   padding: 4px 14px 4px 14px;
 }
 #Line1
 {
    border-width: 0;
    height: 11px;
    width: 793px;
-}
-#Image1
-{
-   border: 0px #000000 solid;
-   padding: 0px 0px 0px 0px;
-   left: 0;
-   top: 0;
-   width: 100%;
-   height: 100%;
 }
 @media only screen and (max-width: 799px)
 {
@@ -393,25 +539,6 @@ div#container
    background: linear-gradient(bottom,#B9B9B9 0%,#EEEEEE 100%);
    border: 0px #C0C0C0 solid;
 }
-#wb_Text10
-{
-   left: 14px !important;
-   top: 1337px !important;
-   visibility: hidden !important;
-   display: none !important;
-   font-size: 8px;
-   font-family: Arial;
-   font-weight: normal;
-   font-style: normal;
-   text-decoration: none;
-   background-color: transparent;
-   background-image: none;
-}
-#wb_Text10
-{
-   margin: 0px 0px 0px 0px;
-   padding: 0px 0px 0px 0px;
-}
 #wb_CssMenu2
 {
    left: 0px !important;
@@ -456,6 +583,48 @@ div#container
    background: linear-gradient(bottom,#B9B9B9 0%,#EEEEEE 100%);
    border: 0px #C0C0C0 solid;
 }
+#wb_CssMenu3
+{
+   left: 318px !important;
+   top: 0px !important;
+   visibility: visible !important;
+   display: inline !important;
+}
+#wb_CssMenu3 li
+{
+   width: 80px;
+}
+#wb_CssMenu3 a
+{
+   color: #696969;
+   border: 0px #C0C0C0 solid;
+   background-color: #F4F3F3;
+   background: -moz-linear-gradient(bottom,#F4F3F3 0%,#F4F3F3 100%);
+   background: -webkit-linear-gradient(bottom,#F4F3F3 0%,#F4F3F3 100%);
+   background: -o-linear-gradient(bottom,#F4F3F3 0%,#F4F3F3 100%);
+   background: -ms-linear-gradient(bottom,#F4F3F3 0%,#F4F3F3 100%);
+   background: linear-gradient(bottom,#F4F3F3 0%,#F4F3F3 100%);
+   font-family: Arial;
+   font-weight: bold;
+   font-size: 15px;
+   font-style: normal;
+   text-decoration: none;
+   width: 70px;
+   height: 70px;
+   padding: 0px 5px 0px 5px;
+   line-height: 70px;
+}
+#wb_CssMenu3 li:hover a, #wb_CssMenu3 a:hover, #wb_CssMenu3 .active
+{
+   color: #696969;
+   background-color: #B9B9B9;
+   background: -moz-linear-gradient(bottom,#B9B9B9 0%,#EEEEEE 100%);
+   background: -webkit-linear-gradient(bottom,#B9B9B9 0%,#EEEEEE 100%);
+   background: -o-linear-gradient(bottom,#B9B9B9 0%,#EEEEEE 100%);
+   background: -ms-linear-gradient(bottom,#B9B9B9 0%,#EEEEEE 100%);
+   background: linear-gradient(bottom,#B9B9B9 0%,#EEEEEE 100%);
+   border: 0px #C0C0C0 solid;
+}
 }
 </style>
 </head>
@@ -468,22 +637,19 @@ div#container
 <ul>
 <li class="firstmain"><a href="./index.html" target="_self" title="Home">Home</a>
 </li>
-<li><a href="./reviews.html" target="_self" title="Reviews">Reviews</a>
+<li><a href="./about_us.html" target="_self" title="About Us">About&nbsp;Us</a>
 </li>
-<li><a class="active" href="./about_us.html" target="_self" title="About Us">About&nbsp;Us</a>
+<li><a href="#" target="_self" title="Services">Services</a>
 </li>
-<li><a href="./support.html" target="_self" title="Support">Support</a>
+<li><a href="#" target="_self" title="Support">Support</a>
 </li>
 <li><a href="./contact.html" target="_self" title="Contact">Contact</a>
 </li>
-<li><a href="./login.html" target="_self" title="Login">Login</a>
+<li><a href="#" target="_self" title="Login">Login</a>
 </li>
 </ul>
 </div>
-<div id="wb_Text10" style="position:absolute;left:70px;top:130px;width:661px;height:27px;z-index:4;">
-<div style="position:absolute;left:0px;top:0px;width:661px;height:27px;"><span style="color:#272727;font-family:'Trebuchet MS';font-size:21px;"><strong>ABOUT US</strong></span></div>
-</div>
-<div id="wb_CssMenu2" style="position:absolute;left:0px;top:0px;width:320px;height:240px;visibility:hidden;z-index:5;">
+<div id="wb_CssMenu2" style="position:absolute;left:0px;top:0px;width:320px;height:240px;visibility:hidden;z-index:4;">
 <ul>
 <li class="firstmain"><a href="./index.html" target="_self" title="Home">Home</a>
 </li>
@@ -499,17 +665,55 @@ div#container
 </li>
 </ul>
 </div>
-
-<div id="wb_Text1" style="position:absolute;left:102px;top:190px;width:475px;height:54px;z-index:7;">
-<span style="color:#000000;font-family:'Courier New';font-size:16px;"><strong>FASTFOOD ON-THE-GO IS A SMALL WEBSITE INTENDED TO MAKE THE LIFES OF THE FAST WORKING GENERATION A BIT EASIER.</strong></span></div>
-<div id="wb_Text2" style="position:absolute;left:102px;top:257px;width:475px;height:72px;z-index:8;">
-<span style="color:#000000;font-family:'Courier New';font-size:16px;"><strong>ITS MAIN TARGET IS TO HELP PEOPLE FIND THE PERFECT RESTAURANT ACCORDING TO THEIR NEEDS (PRICE RANGE, LOCATION RANGE, PARKING FACILITY, FOOD RATINGS) IN THE SHORTEST AMOUNT OF TIME.</strong></span></div>
-<div id="wb_Line1" style="position:absolute;left:12px;top:66px;width:785px;height:3px;z-index:9;">
-<img src="images/img0006.png" id="Line1" alt=""></div>
-<div id="wb_Image1" style="position:absolute;left:587px;top:89px;width:207px;height:382px;z-index:10;">
-<img src="images/Snapchat-621470020.jpg" id="Image1" alt=""></div>
+<a href="http://www.wysiwygwebbuilder.com" target="_blank"><img src="images/builtwithwwb12.png" alt="WYSIWYG Web Builder" style="position:absolute;left:686px;top:860px;border-width:0;z-index:250"></a>
+<div id="wb_CssMenu3" style="position:absolute;left:318px;top:0px;width:483px;height:70px;z-index:6;">
+<ul>
+<li class="firstmain"><a href="./index.html" target="_self" title="Home">Home</a>
+</li>
+<li><a href="./reviews.html" target="_self" title="Reviews">Reviews</a>
+</li>
+<li><a href="./about_us.html" target="_self" title="About Us">About&nbsp;Us</a>
+</li>
+<li><a href="./support.html" target="_self" title="Support">Support</a>
+</li>
+<li><a href="./contact.html" target="_self" title="Contact">Contact</a>
+</li>
+<li><a class="active" href="./login.html" target="_self" title="Login">Login</a>
+</li>
+</ul>
 </div>
-<div id="Layer4" style="position:absolute;text-align:center;left:0px;top:845px;width:100%;height:55px;z-index:11;">
+<div id="wb_Login1" style="position:absolute;left:209px;top:178px;width:377px;height:214px;z-index:7;">
+<form name="loginform" method="post" action="<?php echo basename(__FILE__); ?>" id="loginform">
+<input type="hidden" name="form_name" value="loginform">
+<table id="Login1">
+<tr>
+   <td class="header">Log In</td>
+</tr>
+<tr>
+   <td class="label"><label for="username">User Name</label></td>
+</tr>
+<tr>
+   <td class="row"><input class="input" name="username" type="text" id="username" value="<?php echo $username; ?>"></td>
+</tr>
+<tr>
+   <td class="label"><label for="password">Password</label></td>
+</tr>
+<tr>
+   <td class="row"><input class="input" name="password" type="password" id="password" value="<?php echo $password; ?>"></td>
+</tr>
+<tr>
+   <td class="row"><input id="rememberme" type="checkbox" name="rememberme"><label for="rememberme">Remember me</label></td>
+</tr>
+<tr>
+   <td style="text-align:center;vertical-align:bottom"><input class="button" type="submit" name="login" value="Log In" id="login"></td>
+</tr>
+</table>
+</form>
+</div>
+<div id="wb_Line1" style="position:absolute;left:12px;top:66px;width:785px;height:3px;z-index:8;">
+<img src="images/img0008.png" id="Line1" alt=""></div>
+</div>
+<div id="Layer4" style="position:absolute;text-align:center;left:0px;top:845px;width:100%;height:55px;z-index:9;">
 <div id="Layer4_Container" style="width:800px;position:relative;margin-left:auto;margin-right:auto;text-align:left;">
 <div id="wb_Text11" style="position:absolute;left:7px;top:22px;width:780px;height:16px;text-align:center;z-index:0;">
 <span style="color:#FFFFFF;font-family:'Trebuchet MS';font-size:11px;">Copyright © 2017 by &quot;Mirazur Rahman&quot;&nbsp; ·&nbsp; All Rights reserved&nbsp; ·&nbsp; E-Mail: mdmirazur@yahoo.com.sg</span></div>
