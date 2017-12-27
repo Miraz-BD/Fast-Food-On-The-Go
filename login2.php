@@ -1,53 +1,34 @@
 <?php
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['form_name']) && $_POST['form_name'] == 'loginform')
-{
-   $success_page = '';
-   $error_page = basename(__FILE__);
-   $database = './usersdb.php';
-   $crypt_pass = md5($_POST['password']);
-   $found = false;
-   $fullname = '';
-   $session_timeout = 600;
-   if(filesize($database) > 0)
-   {
-      $items = file($database, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-      foreach($items as $line)
-      {
-         list($username, $password, $email, $name, $active) = explode('|', trim($line));
-         if ($username == $_POST['username'] && $active != "0" && $password == $crypt_pass)
-         {
-            $found = true;
-            $fullname = $name;
-         }
-      }
-   }
-   if($found == false)
-   {
-      header('Location: '.$error_page);
-      exit;
-   }
-   else
-   {
-      if (session_id() == "")
-      {
-         session_start();
-      }
-      $_SESSION['username'] = $_POST['username'];
-      $_SESSION['fullname'] = $fullname;
-      $_SESSION['expires_by'] = time() + $session_timeout;
-      $_SESSION['expires_timeout'] = $session_timeout;
-      $rememberme = isset($_POST['rememberme']) ? true : false;
-      if ($rememberme)
-      {
-         setcookie('username', $_POST['username'], time() + 3600*24*30);
-         setcookie('password', $_POST['password'], time() + 3600*24*30);
-      }
-      header('Location: '.$success_page);
-      exit;
-   }
+
+
+if (isset($_POST["username"])){
+    $name = $_POST["username"];
+    $pass = $_POST["password"];
+    
+    echo $name;
+    //echo $pass;
+    
+    
+    $query = "SELECT user_Pass FROM user_info WHERE user_Name = $name";
+        
+    echo $query;
+    $db = mysqli_connect('localhost','root','','restaurant')
+        or die('Error connecting to MySQL server.');
+   
+    $result = mysqli_query($db, $query) or die('Error querying database.');
+   while ($row = mysqli_fetch_assoc($result)) {
+            
+            if($row['user_Pass'] == $pass){
+                
+            }
+       else{
+           
+           echo " window.location.href='./login.html";
+           
+       }
+        }
 }
-$username = isset($_COOKIE['username']) ? $_COOKIE['username'] : '';
-$password = isset($_COOKIE['password']) ? $_COOKIE['password'] : '';
+
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -665,7 +646,6 @@ div#container
 </li>
 </ul>
 </div>
-<a href="http://www.wysiwygwebbuilder.com" target="_blank"><img src="images/builtwithwwb12.png" alt="WYSIWYG Web Builder" style="position:absolute;left:686px;top:860px;border-width:0;z-index:250"></a>
 <div id="wb_CssMenu3" style="position:absolute;left:318px;top:0px;width:483px;height:70px;z-index:6;">
 <ul>
 <li class="firstmain"><a href="./index.html" target="_self" title="Home">Home</a>
@@ -687,7 +667,7 @@ div#container
 <input type="hidden" name="form_name" value="loginform">
 <table id="Login1">
 <tr>
-   <td class="header">Log In</td>
+   <td class="header">Logged In</td>
 </tr>
 <tr>
    <td class="label"><label for="username">User Name</label></td>

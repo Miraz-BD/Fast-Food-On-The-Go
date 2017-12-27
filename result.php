@@ -1471,6 +1471,55 @@ div.starit:hover {
     opacity: 20%;
     background-color: #ddd;}
     
+    
+#resulttable3 {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    vertical-align:top;
+    width: 99%;
+    position: relative;
+    left: 5px;
+    top: -4px;
+    right:auto;
+    border: 0px solid #73AD21;
+    
+}
+
+#resulttable3 td, #resulttable3 th {
+    border: 3px solid #ddd;
+    padding: 5px;
+}
+
+#resulttable3 tr:nth-child(even){background-color: #f2f2f2;}
+
+#resulttable3 tr:hover {background-color: #ddd;}
+
+#resulttable3 th {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    text-align:center;
+    background-color: #4CAF50;
+    color: white;
+}
+    
+.scrollit3 {
+    overflow:hidden;
+    height:480px;
+}
+div.scrollit3{
+    
+    position: relative;
+    width: 55%;
+    left: 10px;
+    top: 150px;
+   
+    text-wrap: normal;
+    word-wrap: break-word;
+    }
+
+
+    
+    
   </style>
 
 <!-- Insert Google Analytics code here -->
@@ -1577,7 +1626,26 @@ div.starit:hover {
     
         echo "</div>";
         
-  
+  $query1 = "SELECT rest_place_review.rest_review_review, rest_place_review.rest_review_review_star, user_info.user_Name FROM rest_place_review INNER JOIN user_info ON rest_review_user_ID = user_info.user_ID WHERE rest_review_rest_ID=$restid";
+            
+    
+        
+        $result = mysqli_query($db, $query1) or die('Error querying database.');
+            echo "<div class='scrollit3'>";
+            echo "<table id='resulttable3' width=5 >";    
+            echo "<tr><td align='center'>REVIEWS- </td></tr>\n";
+           while ($row = mysqli_fetch_assoc($result)) {
+            
+               echo "<tr><td>{$row['rest_review_review']}</td></tr>\n";
+               echo "<tr><td align='right'>{$row['rest_review_review_star']}*</td></tr>\n";
+               echo "<tr><td align='right'>---------{$row['user_Name']}</td></tr>\n";
+
+        }
+    
+        echo "</table>";
+        
+        echo "</div>";
+        
     
     
     

@@ -634,8 +634,7 @@ div#container
 <div id="wb_Login1" style="position:absolute;left:209px;top:178px;width:377px;height:214px;z-index:7;">
     
     
-<form name="loginform" method="post" action="<?php echo basename(__FILE__); ?>" id="loginform">
-<input type="hidden" name="form_name" value="loginform">
+<form name="loginform" method="post" action="./login2.php" id="loginform">
 <table id="Login1">
 <tr>
    <td class="header">Log In</td>
@@ -644,19 +643,16 @@ div#container
    <td class="label"><label for="username">User Name</label></td>
 </tr>
 <tr>
-   <td class="row"><input class="input" name="username" type="text" id="username" value=""></td>
+   <td class="row"><input class="input" name="username" type="text" id="username"></td>
 </tr>
 <tr>
    <td class="label"><label for="password">Password</label></td>
 </tr>
 <tr>
-   <td class="row"><input class="input" name="password" type="password" id="password" value=""></td>
+   <td class="row"><input class="input" name="password" type="password" id="password"></td>
 </tr>
 <tr>
-   <td class="row"><input id="rememberme" type="checkbox" name="rememberme"><label for="rememberme">Remember me</label></td>
-</tr>
-<tr>
-   <td style="text-align:center;vertical-align:bottom"><input class="button" type="submit" id="submit" name="login" value="Log In" id="login"></td>
+   <td style="text-align:center;vertical-align:bottom"><input class="button" type="submit" id="submit" name="login" id="login"></td>
 </tr>
 </table>
 </form>
@@ -664,9 +660,9 @@ div#container
     
     <script>
         
-        
+        /*
     function searchquery(){
-        
+        var pass = document.getElementById('')
         window.location.href='./login2.php? name='+resname;
         
         
@@ -674,8 +670,12 @@ div#container
     }
     document.getElementById("submit").addEventListener("click", searchquery);
     
-    
+    */
     </script>
+    
+    
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/get_post.js"></script>
 <div id="wb_Line1" style="position:absolute;left:12px;top:66px;width:785px;height:3px;z-index:8;">
 <img src="images/img0008.png" id="Line1" alt=""></div>
 </div>
